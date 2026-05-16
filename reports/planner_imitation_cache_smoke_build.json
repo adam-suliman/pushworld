@@ -1,0 +1,31 @@
+{
+  "cache_dir": "data\\cache\\planner_imitation\\smoke_timeopt",
+  "height": 7,
+  "width": 7,
+  "train_dirs": [
+    "data\\level0\\base\\train"
+  ],
+  "train_puzzles": 2,
+  "examples": 9,
+  "base_examples": 9,
+  "total_actions": 9,
+  "mean_plan_len": 4.5,
+  "max_plan_len": 7,
+  "transforms": [
+    "r0"
+  ],
+  "level0_symmetry_augment": false,
+  "cache": {
+    "hit": false,
+    "cache_dir": "data\\cache\\planner_imitation\\smoke_timeopt",
+    "load_time_s": 0.0,
+    "build_time_s": 0.02063600000110455,
+    "size_bytes": 7056,
+    "manifest_build_profile": {
+      "dataset_materialization_time_s": 0.005935799999861047,
+      "puzzle_parse_time_s": 0.004954799995175563,
+      "state_encode_time_s": 0.0002018000086536631,
+      "env_step_time_s": 0.00016240001423284411
+    }
+  }
+}

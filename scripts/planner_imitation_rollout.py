@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import math
+import time
+from dataclasses import dataclass
 from typing import Iterable
 
 import numpy as np
@@ -17,9 +19,54 @@ from pushworld.puzzle import Actions, PushWorldPuzzle  # noqa: E402
 
 State = tuple[tuple[int, int], ...]
 EncodeCache = dict[tuple[str, State], torch.Tensor]
+PredictionCache = dict[tuple[str, State], tuple[torch.Tensor, torch.Tensor]]
 ACTION_COUNT = 4
 DISTANCE_TARGETS = ("linear", "log")
 BEAM_SCORE_MODES = ("policy", "policy_distance", "distance")
+
+
+@dataclass
+class RolloutProfile:
+    puzzle_parse_time_s: float = 0.0
+    eval_loop_time_s: float = 0.0
+    encode_time_s: float = 0.0
+    model_forward_time_s: float = 0.0
+    env_step_time_s: float = 0.0
+    beam_expand_time_s: float = 0.0
+    beam_rank_time_s: float = 0.0
+    encode_cache_hits: int = 0
+    encode_cache_misses: int = 0
+    prediction_cache_hits: int = 0
+    prediction_cache_misses: int = 0
+    model_forward_batches: int = 0
+    model_forward_states: int = 0
+    predict_batch_calls: int = 0
+    predict_batch_requested_states: int = 0
+    predict_batch_unique_forward_states: int = 0
+    beam_candidate_count: int = 0
+    beam_closed_list_prunes: int = 0
+
+    def to_dict(self) -> dict[str, float | int]:
+        return {
+            "puzzle_parse_time_s": self.puzzle_parse_time_s,
+            "eval_loop_time_s": self.eval_loop_time_s,
+            "encode_time_s": self.encode_time_s,
+            "model_forward_time_s": self.model_forward_time_s,
+            "env_step_time_s": self.env_step_time_s,
+            "beam_expand_time_s": self.beam_expand_time_s,
+            "beam_rank_time_s": self.beam_rank_time_s,
+            "encode_cache_hits": self.encode_cache_hits,
+            "encode_cache_misses": self.encode_cache_misses,
+            "prediction_cache_hits": self.prediction_cache_hits,
+            "prediction_cache_misses": self.prediction_cache_misses,
+            "model_forward_batches": self.model_forward_batches,
+            "model_forward_states": self.model_forward_states,
+            "predict_batch_calls": self.predict_batch_calls,
+            "predict_batch_requested_states": self.predict_batch_requested_states,
+            "predict_batch_unique_forward_states": self.predict_batch_unique_forward_states,
+            "beam_candidate_count": self.beam_candidate_count,
+            "beam_closed_list_prunes": self.beam_closed_list_prunes,
+        }
 
 
 def set_cells(
@@ -79,12 +126,20 @@ def encode_cached(
     width: int,
     cache: EncodeCache,
     max_cache_entries: int,
+    profile: RolloutProfile | None = None,
 ) -> torch.Tensor:
     key = (puzzle_key, state)
     cached = cache.get(key)
     if cached is not None:
+        if profile is not None:
+            profile.encode_cache_hits += 1
         return cached
+    if profile is not None:
+        profile.encode_cache_misses += 1
+    start = time.perf_counter()
     encoded = torch.from_numpy(encode_state(puzzle, state, height, width))
+    if profile is not None:
+        profile.encode_time_s += time.perf_counter() - start
     if max_cache_entries > 0 and len(cache) < max_cache_entries:
         cache[key] = encoded
     return encoded
@@ -142,23 +197,79 @@ def predict_batch(
     max_cache_entries: int,
     distance_target: str = "linear",
     distance_max_steps: int | None = None,
+    prediction_cache: PredictionCache | None = None,
+    profile: RolloutProfile | None = None,
 ) -> tuple[torch.Tensor, torch.Tensor]:
-    encoded = [
-        encode_cached(puzzle, puzzle_key, state, height, width, encode_cache, max_cache_entries)
-        for puzzle, puzzle_key, state in puzzle_states
-    ]
-    batch = torch.stack(encoded).to(device)
-    action_logits, distance_logits = model(batch)
-    action_log_probs = torch.log_softmax(action_logits, dim=-1)
-    distance_probs = torch.softmax(distance_logits, dim=-1)
-    distances = distance_bin_values(
-        distance_logits.shape[-1],
-        distance_target,
-        distance_max_steps,
-        device,
-    )
-    expected_distance = torch.sum(distance_probs * distances.unsqueeze(0), dim=-1)
-    return action_log_probs.cpu(), expected_distance.cpu()
+    if profile is not None:
+        profile.predict_batch_calls += 1
+        profile.predict_batch_requested_states += len(puzzle_states)
+
+    cached_results: dict[tuple[str, State], tuple[torch.Tensor, torch.Tensor]] = {}
+    uncached: list[tuple[PushWorldPuzzle, str, State]] = []
+    uncached_keys: set[tuple[str, State]] = set()
+    for puzzle, puzzle_key, state in puzzle_states:
+        key = (puzzle_key, state)
+        cached = prediction_cache.get(key) if prediction_cache is not None else None
+        if cached is not None:
+            if profile is not None:
+                profile.prediction_cache_hits += 1
+            cached_results[key] = cached
+            continue
+        if key not in uncached_keys:
+            uncached.append((puzzle, puzzle_key, state))
+            uncached_keys.add(key)
+        if profile is not None:
+            profile.prediction_cache_misses += 1
+
+    if uncached:
+        encoded = [
+            encode_cached(
+                puzzle,
+                puzzle_key,
+                state,
+                height,
+                width,
+                encode_cache,
+                max_cache_entries,
+                profile,
+            )
+            for puzzle, puzzle_key, state in uncached
+        ]
+        batch = torch.stack(encoded).to(device)
+        start = time.perf_counter()
+        action_logits, distance_logits = model(batch)
+        action_log_probs = torch.log_softmax(action_logits, dim=-1).cpu()
+        distance_probs = torch.softmax(distance_logits, dim=-1)
+        distances = distance_bin_values(
+            distance_logits.shape[-1],
+            distance_target,
+            distance_max_steps,
+            device,
+        )
+        expected_distance = torch.sum(distance_probs * distances.unsqueeze(0), dim=-1).cpu()
+        if profile is not None:
+            profile.model_forward_time_s += time.perf_counter() - start
+            profile.model_forward_batches += 1
+            profile.model_forward_states += len(uncached)
+            profile.predict_batch_unique_forward_states += len(uncached)
+        for idx, (_, puzzle_key, state) in enumerate(uncached):
+            key = (puzzle_key, state)
+            result = (action_log_probs[idx], expected_distance[idx])
+            cached_results[key] = result
+            if (
+                prediction_cache is not None
+                and max_cache_entries > 0
+                and len(prediction_cache) < max_cache_entries
+            ):
+                prediction_cache[key] = result
+
+    action_rows = []
+    distance_rows = []
+    for _, puzzle_key, state in puzzle_states:
+        action_log_probs, expected_distance = cached_results[(puzzle_key, state)]
+        action_rows.append(action_log_probs)
+        distance_rows.append(expected_distance)
+    return torch.stack(action_rows), torch.stack(distance_rows)
 
 
 def beam_rank_score(
@@ -204,8 +315,12 @@ def choose_action(
     beam_score: str = "policy_distance",
     distance_weight: float = 0.15,
     beam_length_normalization: float = 0.0,
+    prediction_cache: PredictionCache | None = None,
+    profile: RolloutProfile | None = None,
+    closed_list_pruning: bool = False,
 ) -> int:
     seen = set(seen_states) if seen_states is not None and repeat_penalty > 0.0 else set()
+    closed = set(seen_states) if seen_states is not None and closed_list_pruning else set()
 
     if beam_width <= 1 or beam_depth <= 1:
         action_log_probs, _ = predict_batch(
@@ -218,15 +333,20 @@ def choose_action(
             max_cache_entries,
             distance_target,
             distance_max_steps,
+            prediction_cache,
+            profile,
         )
         fallback_action: int | None = None
         for action in torch.argsort(action_log_probs[0], descending=True).tolist():
+            step_start = time.perf_counter()
             next_state = puzzle.get_next_state(state, int(action))
+            if profile is not None:
+                profile.env_step_time_s += time.perf_counter() - step_start
             if next_state == state:
                 continue
             if fallback_action is None:
                 fallback_action = int(action)
-            if next_state not in seen:
+            if next_state not in seen and next_state not in closed:
                 return int(action)
         if fallback_action is not None:
             return fallback_action
@@ -246,21 +366,33 @@ def choose_action(
             max_cache_entries,
             distance_target,
             distance_max_steps,
+            prediction_cache,
+            profile,
         )
         action_log_probs, _ = predictions
         candidates_by_state: dict[State, tuple[State, tuple[int, ...], float]] = {}
+        expand_start = time.perf_counter()
         for beam_idx, (beam_state, path, score) in enumerate(beams):
             action_count = min(top_k, ACTION_COUNT)
             top_actions = torch.topk(action_log_probs[beam_idx], k=action_count).indices.tolist()
             for action in top_actions:
+                step_start = time.perf_counter()
                 next_state = puzzle.get_next_state(beam_state, int(action))
+                if profile is not None:
+                    profile.env_step_time_s += time.perf_counter() - step_start
                 if next_state == beam_state:
+                    continue
+                if next_state in closed:
+                    if profile is not None:
+                        profile.beam_closed_list_prunes += 1
                     continue
                 next_path = path + (int(action),)
                 best_nonempty_path = best_nonempty_path or next_path
                 next_score = score - float(action_log_probs[beam_idx, action])
                 if next_state in seen:
                     next_score += repeat_penalty
+                if profile is not None:
+                    profile.beam_candidate_count += 1
                 if puzzle.is_goal_state(next_state):
                     best_solved = next_path
                     break
@@ -269,6 +401,8 @@ def choose_action(
                     candidates_by_state[next_state] = (next_state, next_path, next_score)
             if best_solved is not None:
                 break
+        if profile is not None:
+            profile.beam_expand_time_s += time.perf_counter() - expand_start
         if best_solved is not None:
             return best_solved[0]
         candidates = list(candidates_by_state.values())
@@ -284,8 +418,11 @@ def choose_action(
             max_cache_entries,
             distance_target,
             distance_max_steps,
+            prediction_cache,
+            profile,
         )
         del leaf_log_probs
+        rank_start = time.perf_counter()
         ranked = sorted(
             zip(candidates, leaf_distances.tolist(), strict=True),
             key=lambda item: beam_rank_score(
@@ -297,6 +434,8 @@ def choose_action(
                 beam_length_normalization=beam_length_normalization,
             ),
         )
+        if profile is not None:
+            profile.beam_rank_time_s += time.perf_counter() - rank_start
         beams = [candidate for candidate, _ in ranked[:beam_width]]
 
     if beams and beams[0][1]:

@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 from pathlib import Path
 
 import torch
 from tqdm.auto import tqdm
 
-from planner_imitation_rollout import choose_action
+from planner_imitation_rollout import RolloutProfile, choose_action
 from planner_imitation_rollout import BEAM_SCORE_MODES, DISTANCE_TARGETS
 from pushworld_study.paths import PROJECT_ROOT, ensure_upstream_pushworld_on_path
 from train_planner_imitation_v2 import (
@@ -73,14 +74,20 @@ def evaluate_split(
     beam_score: str = "policy_distance",
     distance_weight: float = 0.15,
     beam_length_normalization: float = 0.0,
+    closed_list_pruning: bool = False,
 ) -> dict[str, object]:
     solved = 0
     results = []
     encode_cache: dict[tuple[str, tuple[tuple[int, int], ...]], torch.Tensor] = {}
+    prediction_cache: dict[tuple[str, tuple[tuple[int, int], ...]], tuple[torch.Tensor, torch.Tensor]] = {}
+    profile = RolloutProfile()
+    start = time.perf_counter()
     with torch.inference_mode():
         progress = tqdm(puzzle_paths, desc=f"eval {split_name}", unit="puzzle")
         for path in progress:
+            parse_start = time.perf_counter()
             puzzle = PushWorldPuzzle(str(path))
+            profile.puzzle_parse_time_s += time.perf_counter() - parse_start
             if puzzle.dimensions[1] > height or puzzle.dimensions[0] > width:
                 result = {
                     "puzzle": str(path),
@@ -125,9 +132,14 @@ def evaluate_split(
                     beam_score=beam_score,
                     distance_weight=distance_weight,
                     beam_length_normalization=beam_length_normalization,
+                    prediction_cache=prediction_cache,
+                    profile=profile,
+                    closed_list_pruning=closed_list_pruning,
                 )
                 actions.append(ACTION_CHARS[action])
+                step_start = time.perf_counter()
                 state = puzzle.get_next_state(state, action)
+                profile.env_step_time_s += time.perf_counter() - step_start
                 repeated_states += int(state in seen)
                 seen.add(state)
 
@@ -147,12 +159,16 @@ def evaluate_split(
 
     total = len(puzzle_paths)
     skipped = sum(int(result.get("skipped", False)) for result in results)
+    elapsed = time.perf_counter() - start
+    profile.eval_loop_time_s = elapsed
     return {
         "split": split_name,
         "solved": solved,
         "total": total,
         "skipped": skipped,
         "success_rate": solved / max(1, total - skipped),
+        "time_s": elapsed,
+        "solves_per_minute": solved * 60.0 / max(elapsed, 1e-9),
         "max_steps": max_steps,
         "beam_width": beam_width,
         "beam_depth": beam_depth,
@@ -162,6 +178,10 @@ def evaluate_split(
         "beam_score": beam_score,
         "distance_weight": distance_weight,
         "beam_length_normalization": beam_length_normalization,
+        "closed_list_pruning": closed_list_pruning,
+        "cache_entries": len(encode_cache),
+        "prediction_cache_entries": len(prediction_cache),
+        "profile": profile.to_dict(),
         "results": results,
     }
 
@@ -196,6 +216,11 @@ def main() -> None:
     parser.add_argument("--beam-score", choices=BEAM_SCORE_MODES, default="policy_distance")
     parser.add_argument("--distance-weight", type=float, default=0.15)
     parser.add_argument("--beam-length-normalization", type=float, default=0.0)
+    parser.add_argument(
+        "--closed-list-pruning",
+        action="store_true",
+        help="Drop beam candidates that revisit states already seen in the current rollout.",
+    )
     parser.add_argument("--max-cache-entries", type=int, default=250_000)
     parser.add_argument("--device", choices=["auto", "cuda", "cpu"], default="auto")
     parser.add_argument("--output", type=Path, default=None)
@@ -250,6 +275,7 @@ def main() -> None:
         args.beam_score,
         args.distance_weight,
         args.beam_length_normalization,
+        args.closed_list_pruning,
     )
 
     summary = dict(result)
@@ -273,6 +299,8 @@ def main() -> None:
         writer.add_scalar(f"{args.split_name}/solved", result["solved"], 0)
         writer.add_scalar(f"{args.split_name}/total", result["total"], 0)
         writer.add_scalar(f"{args.split_name}/success_rate", result["success_rate"], 0)
+        writer.add_scalar(f"{args.split_name}/time_s", result["time_s"], 0)
+        writer.add_scalar(f"{args.split_name}/solves_per_minute", result["solves_per_minute"], 0)
         writer.add_text(f"{args.split_name}/config", json.dumps(summary, indent=2))
         writer.flush()
         writer.close()

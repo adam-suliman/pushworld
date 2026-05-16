@@ -1,0 +1,79 @@
+{
+  "examples": 9,
+  "base_examples": 9,
+  "augmentation_factor": 1.0,
+  "level0_augmented_base_examples": 0,
+  "unaugmented_base_examples": 9,
+  "transforms": [
+    "r0"
+  ],
+  "solve_time_s": 0.0,
+  "train_time_s": 2.068,
+  "final_loss": 1.744601,
+  "beam_width": 8,
+  "beam_depth": 8,
+  "top_k": 3,
+  "d_model": 16,
+  "nhead": 4,
+  "layers": 1,
+  "encoder_stem": "conv",
+  "dropout": 0.01,
+  "distance_target": "log",
+  "distance_bins": 6,
+  "amp": false,
+  "seed": 1,
+  "planner_workers": 1,
+  "repeat_penalty": 0.0,
+  "beam_score": "policy_distance",
+  "distance_weight": 0.15,
+  "beam_length_normalization": 0.0,
+  "closed_list_pruning": false,
+  "max_cache_entries": 250000,
+  "profile": {
+    "schema_version": 1,
+    "cache": {
+      "enabled": true,
+      "hit": true,
+      "cache_dir": "data\\cache\\planner_imitation\\smoke_timeopt",
+      "load_time_s": 0.006189300009282306,
+      "build_time_s": 0.0,
+      "size_bytes": 7079,
+      "manifest_build_profile": {
+        "dataset_materialization_time_s": 0.005935799999861047,
+        "puzzle_parse_time_s": 0.004954799995175563,
+        "state_encode_time_s": 0.0002018000086536631,
+        "env_step_time_s": 0.00016240001423284411
+      }
+    },
+    "data": {
+      "rgd_solve_time_s": 0.0,
+      "dataset_materialization_time_s": 0.0,
+      "puzzle_parse_time_s": 0.0,
+      "state_encode_time_s": 0.0,
+      "env_step_time_s": 0.0
+    },
+    "train": {
+      "dataloader_wait_time_s": 0.010429900023154914,
+      "forward_backward_update_time_s": 0.5476020999922184,
+      "optimizer_steps": 3,
+      "examples": 9,
+      "epochs": 1,
+      "total_time_s": 2.0681704000016907
+    }
+  },
+  "train_eval": {
+    "skipped": true,
+    "solved": null,
+    "total": 2
+  },
+  "level0_test_eval": {
+    "skipped": true,
+    "solved": null,
+    "total": 0
+  },
+  "level1_eval": {
+    "skipped": true,
+    "solved": null,
+    "total": 0
+  }
+}
