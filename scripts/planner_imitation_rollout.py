@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from typing import Iterable
 
 import numpy as np
@@ -17,6 +18,8 @@ from pushworld.puzzle import Actions, PushWorldPuzzle  # noqa: E402
 State = tuple[tuple[int, int], ...]
 EncodeCache = dict[tuple[str, State], torch.Tensor]
 ACTION_COUNT = 4
+DISTANCE_TARGETS = ("linear", "log")
+BEAM_SCORE_MODES = ("policy", "policy_distance", "distance")
 
 
 def set_cells(
@@ -87,6 +90,48 @@ def encode_cached(
     return encoded
 
 
+def distance_targets(
+    remaining: torch.Tensor,
+    distance_bins: int,
+    distance_target: str,
+) -> torch.Tensor:
+    if distance_target not in DISTANCE_TARGETS:
+        raise ValueError(f"Unknown distance target {distance_target!r}; expected one of {DISTANCE_TARGETS}")
+    if distance_bins <= 1:
+        raise ValueError("distance_bins must be > 1")
+    if distance_target == "log":
+        targets = torch.round(torch.log(remaining.float() + 1.0)).long()
+    else:
+        targets = remaining.long()
+    return targets.clamp_(min=0, max=distance_bins - 1)
+
+
+def auto_distance_bins(max_steps: int, distance_target: str) -> int:
+    if distance_target not in DISTANCE_TARGETS:
+        raise ValueError(f"Unknown distance target {distance_target!r}; expected one of {DISTANCE_TARGETS}")
+    if distance_target == "log":
+        return max(2, int(math.ceil(math.log(max_steps + 1))) + 1)
+    return max_steps + 1
+
+
+def distance_bin_values(
+    distance_bins: int,
+    distance_target: str,
+    max_steps: int | None,
+    device: torch.device,
+) -> torch.Tensor:
+    if distance_target not in DISTANCE_TARGETS:
+        raise ValueError(f"Unknown distance target {distance_target!r}; expected one of {DISTANCE_TARGETS}")
+    bins = torch.arange(distance_bins, device=device, dtype=torch.float32)
+    if distance_target == "log":
+        values = torch.expm1(bins)
+    else:
+        values = bins
+    if max_steps is not None:
+        values = torch.clamp(values, max=float(max_steps))
+    return values
+
+
 def predict_batch(
     model: nn.Module,
     puzzle_states: list[tuple[PushWorldPuzzle, str, State]],
@@ -95,6 +140,8 @@ def predict_batch(
     device: torch.device,
     encode_cache: EncodeCache,
     max_cache_entries: int,
+    distance_target: str = "linear",
+    distance_max_steps: int | None = None,
 ) -> tuple[torch.Tensor, torch.Tensor]:
     encoded = [
         encode_cached(puzzle, puzzle_key, state, height, width, encode_cache, max_cache_entries)
@@ -104,9 +151,37 @@ def predict_batch(
     action_logits, distance_logits = model(batch)
     action_log_probs = torch.log_softmax(action_logits, dim=-1)
     distance_probs = torch.softmax(distance_logits, dim=-1)
-    distances = torch.arange(distance_logits.shape[-1], device=device, dtype=torch.float32)
+    distances = distance_bin_values(
+        distance_logits.shape[-1],
+        distance_target,
+        distance_max_steps,
+        device,
+    )
     expected_distance = torch.sum(distance_probs * distances.unsqueeze(0), dim=-1)
     return action_log_probs.cpu(), expected_distance.cpu()
+
+
+def beam_rank_score(
+    policy_cost: float,
+    expected_distance: float,
+    path_len: int,
+    beam_score: str,
+    distance_weight: float,
+    beam_length_normalization: float,
+) -> float:
+    if beam_score not in BEAM_SCORE_MODES:
+        raise ValueError(f"Unknown beam score mode {beam_score!r}; expected one of {BEAM_SCORE_MODES}")
+    if beam_length_normalization < 0.0:
+        raise ValueError("beam_length_normalization must be >= 0")
+    if distance_weight < 0.0:
+        raise ValueError("distance_weight must be >= 0")
+
+    normalized_policy_cost = policy_cost / (max(1, path_len) ** beam_length_normalization)
+    if beam_score == "policy":
+        return normalized_policy_cost
+    if beam_score == "distance":
+        return expected_distance + distance_weight * normalized_policy_cost
+    return normalized_policy_cost + distance_weight * expected_distance
 
 
 def choose_action(
@@ -124,6 +199,11 @@ def choose_action(
     max_cache_entries: int,
     seen_states: Iterable[State] | None = None,
     repeat_penalty: float = 0.0,
+    distance_target: str = "linear",
+    distance_max_steps: int | None = None,
+    beam_score: str = "policy_distance",
+    distance_weight: float = 0.15,
+    beam_length_normalization: float = 0.0,
 ) -> int:
     seen = set(seen_states) if seen_states is not None and repeat_penalty > 0.0 else set()
 
@@ -136,6 +216,8 @@ def choose_action(
             device,
             encode_cache,
             max_cache_entries,
+            distance_target,
+            distance_max_steps,
         )
         fallback_action: int | None = None
         for action in torch.argsort(action_log_probs[0], descending=True).tolist():
@@ -162,6 +244,8 @@ def choose_action(
             device,
             encode_cache,
             max_cache_entries,
+            distance_target,
+            distance_max_steps,
         )
         action_log_probs, _ = predictions
         candidates_by_state: dict[State, tuple[State, tuple[int, ...], float]] = {}
@@ -198,11 +282,20 @@ def choose_action(
             device,
             encode_cache,
             max_cache_entries,
+            distance_target,
+            distance_max_steps,
         )
         del leaf_log_probs
         ranked = sorted(
             zip(candidates, leaf_distances.tolist(), strict=True),
-            key=lambda item: item[0][2] + 0.15 * float(item[1]),
+            key=lambda item: beam_rank_score(
+                policy_cost=item[0][2],
+                expected_distance=float(item[1]),
+                path_len=len(item[0][1]),
+                beam_score=beam_score,
+                distance_weight=distance_weight,
+                beam_length_normalization=beam_length_normalization,
+            ),
         )
         beams = [candidate for candidate, _ in ranked[:beam_width]]
 

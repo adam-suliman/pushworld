@@ -1,0 +1,1468 @@
+{
+  "split": "level0_base_test_p1_s100",
+  "solved": 181,
+  "total": 200,
+  "skipped": 0,
+  "success_rate": 0.905,
+  "max_steps": 100,
+  "beam_width": 8,
+  "beam_depth": 8,
+  "top_k": 3,
+  "repeat_penalty": 1.0,
+  "distance_target": "linear",
+  "beam_score": "policy_distance",
+  "distance_weight": 0.15,
+  "beam_length_normalization": 0.0,
+  "results": [
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_0.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_1.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_2.pwp",
+      "solved": true,
+      "steps": 8,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_3.pwp",
+      "solved": true,
+      "steps": 8,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_4.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 95,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_5.pwp",
+      "solved": true,
+      "steps": 12,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_6.pwp",
+      "solved": true,
+      "steps": 12,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_7.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_8.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_9.pwp",
+      "solved": true,
+      "steps": 10,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_10.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_11.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_12.pwp",
+      "solved": true,
+      "steps": 15,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_13.pwp",
+      "solved": true,
+      "steps": 16,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_14.pwp",
+      "solved": true,
+      "steps": 8,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_15.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_16.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 96,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_17.pwp",
+      "solved": true,
+      "steps": 11,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_18.pwp",
+      "solved": true,
+      "steps": 24,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_19.pwp",
+      "solved": true,
+      "steps": 15,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_20.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_21.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_22.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_23.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_24.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_25.pwp",
+      "solved": true,
+      "steps": 10,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_26.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_27.pwp",
+      "solved": true,
+      "steps": 2,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_28.pwp",
+      "solved": true,
+      "steps": 11,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_29.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_30.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 82,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_31.pwp",
+      "solved": true,
+      "steps": 2,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_32.pwp",
+      "solved": true,
+      "steps": 12,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_33.pwp",
+      "solved": true,
+      "steps": 19,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_34.pwp",
+      "solved": true,
+      "steps": 10,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_35.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_36.pwp",
+      "solved": true,
+      "steps": 14,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_37.pwp",
+      "solved": true,
+      "steps": 8,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_38.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_39.pwp",
+      "solved": true,
+      "steps": 20,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_40.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_41.pwp",
+      "solved": true,
+      "steps": 8,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_42.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_43.pwp",
+      "solved": true,
+      "steps": 5,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_44.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 90,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_45.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_46.pwp",
+      "solved": true,
+      "steps": 12,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_47.pwp",
+      "solved": true,
+      "steps": 14,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_48.pwp",
+      "solved": true,
+      "steps": 49,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_49.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_50.pwp",
+      "solved": true,
+      "steps": 16,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_51.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_52.pwp",
+      "solved": true,
+      "steps": 11,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_53.pwp",
+      "solved": true,
+      "steps": 18,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_54.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_55.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_56.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_57.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_58.pwp",
+      "solved": true,
+      "steps": 25,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_59.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_60.pwp",
+      "solved": true,
+      "steps": 14,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_61.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_62.pwp",
+      "solved": true,
+      "steps": 11,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_63.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_64.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_65.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_66.pwp",
+      "solved": true,
+      "steps": 26,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_67.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_68.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_69.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 87,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_70.pwp",
+      "solved": true,
+      "steps": 13,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_71.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_72.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_73.pwp",
+      "solved": true,
+      "steps": 8,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_74.pwp",
+      "solved": true,
+      "steps": 11,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_75.pwp",
+      "solved": true,
+      "steps": 10,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_76.pwp",
+      "solved": true,
+      "steps": 41,
+      "repeated_states": 1,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_77.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_78.pwp",
+      "solved": true,
+      "steps": 8,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_79.pwp",
+      "solved": true,
+      "steps": 11,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_80.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_81.pwp",
+      "solved": true,
+      "steps": 11,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_82.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_83.pwp",
+      "solved": true,
+      "steps": 5,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_84.pwp",
+      "solved": true,
+      "steps": 16,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_85.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_86.pwp",
+      "solved": true,
+      "steps": 2,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_87.pwp",
+      "solved": true,
+      "steps": 14,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_88.pwp",
+      "solved": true,
+      "steps": 13,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_89.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 85,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_90.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_91.pwp",
+      "solved": true,
+      "steps": 13,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_92.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_93.pwp",
+      "solved": true,
+      "steps": 12,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_94.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_95.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_96.pwp",
+      "solved": true,
+      "steps": 10,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_97.pwp",
+      "solved": true,
+      "steps": 17,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_98.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_99.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 83,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_100.pwp",
+      "solved": true,
+      "steps": 5,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_101.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 69,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_102.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_103.pwp",
+      "solved": true,
+      "steps": 12,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_104.pwp",
+      "solved": true,
+      "steps": 8,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_105.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_106.pwp",
+      "solved": true,
+      "steps": 10,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_107.pwp",
+      "solved": true,
+      "steps": 2,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_108.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_109.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_110.pwp",
+      "solved": true,
+      "steps": 8,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_111.pwp",
+      "solved": true,
+      "steps": 5,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_112.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_113.pwp",
+      "solved": true,
+      "steps": 5,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_114.pwp",
+      "solved": true,
+      "steps": 5,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_115.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 80,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_116.pwp",
+      "solved": true,
+      "steps": 15,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_117.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_118.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 78,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_119.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_120.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_121.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 74,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_122.pwp",
+      "solved": true,
+      "steps": 5,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_123.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_124.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_125.pwp",
+      "solved": true,
+      "steps": 17,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_126.pwp",
+      "solved": true,
+      "steps": 12,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_127.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 80,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_128.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 75,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_129.pwp",
+      "solved": true,
+      "steps": 12,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_130.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_131.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_132.pwp",
+      "solved": true,
+      "steps": 25,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_133.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 17,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_134.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_135.pwp",
+      "solved": true,
+      "steps": 12,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_136.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 69,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_137.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_138.pwp",
+      "solved": true,
+      "steps": 24,
+      "repeated_states": 2,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_139.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_140.pwp",
+      "solved": true,
+      "steps": 19,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_141.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_142.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 84,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_143.pwp",
+      "solved": true,
+      "steps": 17,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_144.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_145.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_146.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_147.pwp",
+      "solved": true,
+      "steps": 20,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_148.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_149.pwp",
+      "solved": true,
+      "steps": 15,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_150.pwp",
+      "solved": true,
+      "steps": 13,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_151.pwp",
+      "solved": true,
+      "steps": 10,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_152.pwp",
+      "solved": true,
+      "steps": 18,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_153.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_154.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_155.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_156.pwp",
+      "solved": true,
+      "steps": 12,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_157.pwp",
+      "solved": true,
+      "steps": 12,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_158.pwp",
+      "solved": true,
+      "steps": 14,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_159.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_160.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_161.pwp",
+      "solved": true,
+      "steps": 14,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_162.pwp",
+      "solved": true,
+      "steps": 10,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_163.pwp",
+      "solved": true,
+      "steps": 11,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_164.pwp",
+      "solved": true,
+      "steps": 10,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_165.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_166.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_167.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_168.pwp",
+      "solved": true,
+      "steps": 14,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_169.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 82,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_170.pwp",
+      "solved": true,
+      "steps": 16,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_171.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_172.pwp",
+      "solved": true,
+      "steps": 10,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_173.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_174.pwp",
+      "solved": true,
+      "steps": 9,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_175.pwp",
+      "solved": true,
+      "steps": 5,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_176.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 74,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_177.pwp",
+      "solved": true,
+      "steps": 16,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_178.pwp",
+      "solved": true,
+      "steps": 10,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_179.pwp",
+      "solved": true,
+      "steps": 20,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_180.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_181.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_182.pwp",
+      "solved": true,
+      "steps": 8,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_183.pwp",
+      "solved": true,
+      "steps": 14,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_184.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_185.pwp",
+      "solved": true,
+      "steps": 8,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_186.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_187.pwp",
+      "solved": true,
+      "steps": 8,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_188.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_189.pwp",
+      "solved": true,
+      "steps": 3,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_190.pwp",
+      "solved": true,
+      "steps": 2,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_191.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_192.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_193.pwp",
+      "solved": true,
+      "steps": 10,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_194.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_195.pwp",
+      "solved": true,
+      "steps": 8,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_196.pwp",
+      "solved": true,
+      "steps": 4,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_197.pwp",
+      "solved": true,
+      "steps": 16,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_198.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 94,
+      "skipped": false
+    },
+    {
+      "puzzle": "data\\level0\\base\\test\\level_0_base_test_199.pwp",
+      "solved": true,
+      "steps": 11,
+      "repeated_states": 0,
+      "skipped": false
+    }
+  ],
+  "checkpoint_args": {
+    "train_dir": "[WindowsPath('data/level0/base/train')]",
+    "test_dir": "[WindowsPath('data/level0/base/test')]",
+    "level1_dir": "external\\pushworld\\benchmark\\puzzles\\level1",
+    "planner": "external\\pushworld\\cpp\\build\\bin\\run_planner.exe",
+    "train_puzzles": "5",
+    "test_puzzles": "10",
+    "level1_puzzles": "5",
+    "all_train": "True",
+    "all_test": "True",
+    "all_level1": "True",
+    "level0_symmetry_augment": "False",
+    "augment_transforms": "all",
+    "epochs": "60",
+    "batch_size": "128",
+    "lr": "0.001",
+    "distance_loss_weight": "0.2",
+    "distance_target": "linear",
+    "distance_bins": "0",
+    "encoder_stem": "linear",
+    "dropout": "0.0",
+    "d_model": "64",
+    "nhead": "4",
+    "layers": "1",
+    "amp": "True",
+    "max_steps": "100",
+    "beam_width": "8",
+    "beam_depth": "8",
+    "top_k": "3",
+    "repeat_penalty": "0.0",
+    "beam_score": "policy_distance",
+    "distance_weight": "0.15",
+    "beam_length_normalization": "0.0",
+    "eval_every": "0",
+    "eval_puzzles": "50",
+    "log_every_batches": "0",
+    "max_cache_entries": "250000",
+    "output": "reports\\planner_imitation_level0_base_repro_train.json",
+    "model_output": "models\\planner_imitation_level0_base_repro.pt",
+    "resume_checkpoint": "None",
+    "epoch_checkpoint_dir": "models\\planner_imitation_level0_base_repro_epochs",
+    "no_epoch_checkpoints": "False",
+    "tensorboard_log": "None",
+    "skip_train_eval": "True",
+    "print_expert_plans": "False",
+    "verbose": "False",
+    "planner_time_limit": "10.0",
+    "planner_workers": "8",
+    "seed": "1"
+  }
+}

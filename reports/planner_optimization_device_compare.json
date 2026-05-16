@@ -1,0 +1,390 @@
+{
+  "config": {
+    "train_count": 24,
+    "eval_count": 6,
+    "epochs": 4,
+    "batch_size": 32,
+    "lr": 0.001,
+    "distance_loss_weight": 0.2,
+    "d_model": 32,
+    "layers": 1,
+    "max_steps": 100,
+    "beam_width": 2,
+    "beam_depth": 2,
+    "top_k": 3,
+    "repeat_penalty": 1.0,
+    "seed": 5,
+    "output": "reports\\planner_optimization_device_compare.json",
+    "include_cpu": true
+  },
+  "environment": {
+    "python": "3.13.3 (tags/v3.13.3:6280bb5, Apr  8 2025, 14:47:33) [MSC v.1943 64 bit (AMD64)]",
+    "torch": "2.10.0.dev20251006+cu130",
+    "cuda_available": true,
+    "cuda_device": "NVIDIA GeForce RTX 2060"
+  },
+  "data": {
+    "source": "external/pushworld benchmark level1 reference solutions",
+    "train_puzzles": 24,
+    "eval_puzzles": 6,
+    "train_examples": 643,
+    "eval_examples": 192,
+    "height": 51,
+    "width": 42,
+    "train_puzzle_names": [
+      "Tucked Away.pwp",
+      "Two Goals.pwp",
+      "Eyes On The Prize.pwp",
+      "Get Out Of My Spot.pwp",
+      "Triple Obstacle.pwp",
+      "Small Wins.pwp",
+      "Swap Places.pwp",
+      "Tool Train.pwp",
+      "Interlocking Pieces.pwp",
+      "Goal Is A Tool.pwp",
+      "Road Block.pwp",
+      "A Perfect Fit.pwp",
+      "Pulling.pwp",
+      "Double Simple Tool.pwp",
+      "A Tight Squeeze.pwp",
+      "Youre In My Way.pwp",
+      "Sand Castle.pwp",
+      "Swiss Army Knife.pwp",
+      "Plus Two Goals.pwp",
+      "Dont Get Distracted.pwp",
+      "Horizontal Separation.pwp",
+      "Make A Triangle.pwp",
+      "Youre In My Spot.pwp",
+      "Hockey Stick.pwp"
+    ],
+    "eval_puzzle_names": [
+      "Horizontal Channel.pwp",
+      "Seeing Red.pwp",
+      "Swap S Places.pwp",
+      "Vertical Separation.pwp",
+      "Choose Wisely.pwp",
+      "Box Walls.pwp"
+    ]
+  },
+  "total_time_s": 322.86332720000064,
+  "results": [
+    {
+      "name": "baseline_linear_exact_cuda",
+      "device": "cuda",
+      "encoder_stem": "linear",
+      "distance_target": "linear",
+      "dropout": 0.0,
+      "d_model": 32,
+      "layers": 1,
+      "epochs": 4,
+      "distance_bins": 101,
+      "parameters": 85033,
+      "train_time_s": 12.839766999997664,
+      "train_examples_per_s": 200.31516148232814,
+      "peak_cuda_memory_mb": 210.349609375,
+      "epoch_metrics": [
+        {
+          "epoch": 1.0,
+          "time_s": 3.36567130000185,
+          "examples_per_s": 191.04658259398255,
+          "loss": 2.3162401849708143,
+          "action_loss": 1.4030575490850683,
+          "distance_loss": 4.565913178872543
+        },
+        {
+          "epoch": 2.0,
+          "time_s": 3.147510800001328,
+          "examples_per_s": 204.2884173740496,
+          "loss": 2.238311807623547,
+          "action_loss": 1.3861769515656015,
+          "distance_loss": 4.260674073202985
+        },
+        {
+          "epoch": 3.0,
+          "time_s": 3.158384299997124,
+          "examples_per_s": 203.5851052073003,
+          "loss": 2.193899595904313,
+          "action_loss": 1.4006733662603803,
+          "distance_loss": 3.96613102307772
+        },
+        {
+          "epoch": 4.0,
+          "time_s": 3.1678465999939363,
+          "examples_per_s": 202.9770002124569,
+          "loss": 2.146493925462429,
+          "action_loss": 1.3863178239454563,
+          "distance_loss": 3.8008804287917877
+        }
+      ],
+      "train_accuracy": {
+        "action_accuracy": 0.2892690513219285,
+        "action_loss": 1.3833126591672051,
+        "distance_loss": 3.748760779575093,
+        "examples": 643
+      },
+      "eval_accuracy": {
+        "action_accuracy": 0.2760416666666667,
+        "action_loss": 1.3921558260917664,
+        "distance_loss": 3.945384899775187,
+        "examples": 192
+      },
+      "rollout": {
+        "solved": 0,
+        "total": 6,
+        "success_rate": 0.0,
+        "time_s": 6.568884699998307,
+        "cache_entries": 191,
+        "results": [
+          {
+            "puzzle": "Horizontal Channel.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 84
+          },
+          {
+            "puzzle": "Seeing Red.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 92
+          },
+          {
+            "puzzle": "Swap S Places.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 72
+          },
+          {
+            "puzzle": "Vertical Separation.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 91
+          },
+          {
+            "puzzle": "Choose Wisely.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 97
+          },
+          {
+            "puzzle": "Box Walls.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 84
+          }
+        ]
+      }
+    },
+    {
+      "name": "optimized_conv_log_cuda",
+      "device": "cuda",
+      "encoder_stem": "conv",
+      "distance_target": "log",
+      "dropout": 0.01,
+      "d_model": 32,
+      "layers": 1,
+      "epochs": 4,
+      "distance_bins": 6,
+      "parameters": 92938,
+      "train_time_s": 16.02752689999761,
+      "train_examples_per_s": 160.4739156607114,
+      "peak_cuda_memory_mb": 253.84130859375,
+      "epoch_metrics": [
+        {
+          "epoch": 1.0,
+          "time_s": 4.032218500004092,
+          "examples_per_s": 159.46556467595877,
+          "loss": 1.6932228623801033,
+          "action_loss": 1.4109410627818961,
+          "distance_loss": 1.4114089378302057
+        },
+        {
+          "epoch": 2.0,
+          "time_s": 3.9178811999954632,
+          "examples_per_s": 164.11932041245777,
+          "loss": 1.6306321821168273,
+          "action_loss": 1.3834568347382137,
+          "distance_loss": 1.2358767255839442
+        },
+        {
+          "epoch": 3.0,
+          "time_s": 3.9971856999982265,
+          "examples_per_s": 160.86317931145538,
+          "loss": 1.6338803503042432,
+          "action_loss": 1.3914088489108285,
+          "distance_loss": 1.2123574583934589
+        },
+        {
+          "epoch": 4.0,
+          "time_s": 4.079739599997993,
+          "examples_per_s": 157.60809832086252,
+          "loss": 1.5892918667934175,
+          "action_loss": 1.3524224411458659,
+          "distance_loss": 1.184347098852576
+        }
+      ],
+      "train_accuracy": {
+        "action_accuracy": 0.3188180404354588,
+        "action_loss": 1.3177395593693617,
+        "distance_loss": 1.1638993252862482,
+        "examples": 643
+      },
+      "eval_accuracy": {
+        "action_accuracy": 0.2760416666666667,
+        "action_loss": 1.383208652337392,
+        "distance_loss": 1.254984180132548,
+        "examples": 192
+      },
+      "rollout": {
+        "solved": 0,
+        "total": 6,
+        "success_rate": 0.0,
+        "time_s": 7.8145625999968615,
+        "cache_entries": 195,
+        "results": [
+          {
+            "puzzle": "Horizontal Channel.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 83
+          },
+          {
+            "puzzle": "Seeing Red.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 90
+          },
+          {
+            "puzzle": "Swap S Places.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 64
+          },
+          {
+            "puzzle": "Vertical Separation.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 91
+          },
+          {
+            "puzzle": "Choose Wisely.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 97
+          },
+          {
+            "puzzle": "Box Walls.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 74
+          }
+        ]
+      }
+    },
+    {
+      "name": "baseline_linear_exact_cpu",
+      "device": "cpu",
+      "encoder_stem": "linear",
+      "distance_target": "linear",
+      "dropout": 0.0,
+      "d_model": 32,
+      "layers": 1,
+      "epochs": 4,
+      "distance_bins": 101,
+      "parameters": 85033,
+      "train_time_s": 114.71632660000614,
+      "train_examples_per_s": 22.420522659935507,
+      "peak_cuda_memory_mb": 0.0,
+      "epoch_metrics": [
+        {
+          "epoch": 1.0,
+          "time_s": 32.40957860000344,
+          "examples_per_s": 19.839813653113396,
+          "loss": 2.316226381907011,
+          "action_loss": 1.403050426932553,
+          "distance_loss": 4.565879673460965
+        },
+        {
+          "epoch": 2.0,
+          "time_s": 28.30541649999941,
+          "examples_per_s": 22.71650021472086,
+          "loss": 2.2383081201075767,
+          "action_loss": 1.3861925131054726,
+          "distance_loss": 4.2605780064596175
+        },
+        {
+          "epoch": 3.0,
+          "time_s": 26.969550699999672,
+          "examples_per_s": 23.841702338778962,
+          "loss": 2.194137028921077,
+          "action_loss": 1.4008558376766105,
+          "distance_loss": 3.9664058181027047
+        },
+        {
+          "epoch": 4.0,
+          "time_s": 27.0314348000029,
+          "examples_per_s": 23.787120615585344,
+          "loss": 2.1466068009010186,
+          "action_loss": 1.38633787038723,
+          "distance_loss": 3.8013445322472794
+        }
+      ],
+      "train_accuracy": {
+        "action_accuracy": 0.2892690513219285,
+        "action_loss": 1.383310705098913,
+        "distance_loss": 3.749065026895811,
+        "examples": 643
+      },
+      "eval_accuracy": {
+        "action_accuracy": 0.2760416666666667,
+        "action_loss": 1.3922986388206482,
+        "distance_loss": 3.9455620447794595,
+        "examples": 192
+      },
+      "rollout": {
+        "solved": 0,
+        "total": 6,
+        "success_rate": 0.0,
+        "time_s": 125.2262991000025,
+        "cache_entries": 191,
+        "results": [
+          {
+            "puzzle": "Horizontal Channel.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 84
+          },
+          {
+            "puzzle": "Seeing Red.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 92
+          },
+          {
+            "puzzle": "Swap S Places.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 72
+          },
+          {
+            "puzzle": "Vertical Separation.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 91
+          },
+          {
+            "puzzle": "Choose Wisely.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 97
+          },
+          {
+            "puzzle": "Box Walls.pwp",
+            "solved": false,
+            "steps": 100,
+            "repeated_states": 84
+          }
+        ]
+      }
+    }
+  ]
+}

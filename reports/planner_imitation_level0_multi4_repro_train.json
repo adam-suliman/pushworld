@@ -1,0 +1,46 @@
+{
+  "examples": 95416,
+  "base_examples": 95416,
+  "augmentation_factor": 1.0,
+  "level0_augmented_base_examples": 0,
+  "unaugmented_base_examples": 95416,
+  "transforms": [
+    "r0"
+  ],
+  "solve_time_s": 58.361,
+  "train_time_s": 2881.111,
+  "final_loss": 1.302111,
+  "beam_width": 8,
+  "beam_depth": 8,
+  "top_k": 3,
+  "d_model": 64,
+  "nhead": 4,
+  "layers": 1,
+  "encoder_stem": "linear",
+  "dropout": 0.0,
+  "distance_target": "linear",
+  "distance_bins": 101,
+  "amp": true,
+  "seed": 1,
+  "planner_workers": 8,
+  "repeat_penalty": 0.0,
+  "beam_score": "policy_distance",
+  "distance_weight": 0.15,
+  "beam_length_normalization": 0.0,
+  "max_cache_entries": 250000,
+  "train_eval": {
+    "skipped": true,
+    "solved": null,
+    "total": 8000
+  },
+  "level0_test_eval": {
+    "skipped": true,
+    "solved": null,
+    "total": 200
+  },
+  "level1_eval": {
+    "skipped": true,
+    "solved": null,
+    "total": 68
+  }
+}

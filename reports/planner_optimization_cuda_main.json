@@ -1,0 +1,442 @@
+{
+  "config": {
+    "train_count": 40,
+    "eval_count": 12,
+    "epochs": 8,
+    "batch_size": 32,
+    "lr": 0.001,
+    "distance_loss_weight": 0.2,
+    "d_model": 32,
+    "layers": 1,
+    "max_steps": 200,
+    "beam_width": 4,
+    "beam_depth": 4,
+    "top_k": 3,
+    "repeat_penalty": 1.0,
+    "seed": 3,
+    "output": "reports\\planner_optimization_cuda_main.json",
+    "include_cpu": false
+  },
+  "environment": {
+    "python": "3.13.3 (tags/v3.13.3:6280bb5, Apr  8 2025, 14:47:33) [MSC v.1943 64 bit (AMD64)]",
+    "torch": "2.10.0.dev20251006+cu130",
+    "cuda_available": true,
+    "cuda_device": "NVIDIA GeForce RTX 2060"
+  },
+  "data": {
+    "source": "external/pushworld benchmark level1 reference solutions",
+    "train_puzzles": 40,
+    "eval_puzzles": 12,
+    "train_examples": 1134,
+    "eval_examples": 359,
+    "height": 51,
+    "width": 42,
+    "train_puzzle_names": [
+      "Swap Places.pwp",
+      "Seeing Red.pwp",
+      "Box Walls.pwp",
+      "Hockey Stick.pwp",
+      "Cage Door.pwp",
+      "Obstacle Has Obstacle.pwp",
+      "Horizontal Channel.pwp",
+      "Sand Castle.pwp",
+      "Road Block.pwp",
+      "Kangaroo Pouch.pwp",
+      "Many Small Tools.pwp",
+      "Irrelevant Obstacles.pwp",
+      "J Tool.pwp",
+      "Trade Places.pwp",
+      "Two Is Company.pwp",
+      "Vertical Separation.pwp",
+      "Building Blocks.pwp",
+      "Double Trouble.pwp",
+      "Minefield.pwp",
+      "Swap S Places.pwp",
+      "A Worthy Sacrifice.pwp",
+      "Corner Sequencing.pwp",
+      "Pull Up.pwp",
+      "Triple Simple Tool.pwp",
+      "Get Out Of My Spot.pwp",
+      "Make A Triangle.pwp",
+      "Ignorable Obstacles.pwp",
+      "Take The Long Route.pwp",
+      "Double Obstacle.pwp",
+      "Size Limit.pwp",
+      "Horizontal Separation.pwp",
+      "Pummel Through.pwp",
+      "Small Wins.pwp",
+      "Friendly Obstacle.pwp",
+      "A Perfect Fit.pwp",
+      "Goal Is A Tool.pwp",
+      "A Tight Squeeze.pwp",
+      "Pick A Tool.pwp",
+      "Clear The Way.pwp",
+      "At Crossroads.pwp"
+    ],
+    "eval_puzzle_names": [
+      "Two Goals.pwp",
+      "Insert Tool.pwp",
+      "Mini Minefield.pwp",
+      "Simple Tool.pwp",
+      "Walk Past.pwp",
+      "Three Goals.pwp",
+      "Choose Wisely.pwp",
+      "Pulling.pwp",
+      "Interlocking Pieces.pwp",
+      "Swiss Army Knife.pwp",
+      "Tool Train.pwp",
+      "Multiple Goals.pwp"
+    ]
+  },
+  "total_time_s": 288.5671866999983,
+  "results": [
+    {
+      "name": "baseline_linear_exact_cuda",
+      "device": "cuda",
+      "encoder_stem": "linear",
+      "distance_target": "linear",
+      "dropout": 0.0,
+      "d_model": 32,
+      "layers": 1,
+      "epochs": 8,
+      "distance_bins": 201,
+      "parameters": 88333,
+      "train_time_s": 42.919163999999,
+      "train_examples_per_s": 211.37410784609438,
+      "peak_cuda_memory_mb": 210.41259765625,
+      "epoch_metrics": [
+        {
+          "epoch": 1.0,
+          "time_s": 5.4290612999975565,
+          "examples_per_s": 208.87588799200157,
+          "loss": 2.379864552243887,
+          "action_loss": 1.398322201279736,
+          "distance_loss": 4.907711582419313
+        },
+        {
+          "epoch": 2.0,
+          "time_s": 5.265922500002489,
+          "examples_per_s": 215.34688366558072,
+          "loss": 2.2054842048221164,
+          "action_loss": 1.3996862587264396,
+          "distance_loss": 4.028989727114454
+        },
+        {
+          "epoch": 3.0,
+          "time_s": 5.295749999997497,
+          "examples_per_s": 214.13397535769928,
+          "loss": 2.145752318531958,
+          "action_loss": 1.3876689823846968,
+          "distance_loss": 3.7904165039197055
+        },
+        {
+          "epoch": 4.0,
+          "time_s": 5.335425099998247,
+          "examples_per_s": 212.54163984053915,
+          "loss": 2.140310760528322,
+          "action_loss": 1.3888709009009064,
+          "distance_loss": 3.7571992558777016
+        },
+        {
+          "epoch": 5.0,
+          "time_s": 5.361228599998867,
+          "examples_per_s": 211.51868062485522,
+          "loss": 2.1403604159279475,
+          "action_loss": 1.39033099246824,
+          "distance_loss": 3.750147036984694
+        },
+        {
+          "epoch": 6.0,
+          "time_s": 5.381588600001123,
+          "examples_per_s": 210.71844845214724,
+          "loss": 2.142594546868057,
+          "action_loss": 1.393331317674546,
+          "distance_loss": 3.746316069227888
+        },
+        {
+          "epoch": 7.0,
+          "time_s": 5.414787699999579,
+          "examples_per_s": 209.42649330463837,
+          "loss": 2.1313143478709766,
+          "action_loss": 1.3833857875652413,
+          "distance_loss": 3.7396427331988353
+        },
+        {
+          "epoch": 8.0,
+          "time_s": 5.434742899997218,
+          "examples_per_s": 208.65752453544408,
+          "loss": 2.140747850744392,
+          "action_loss": 1.3918946510479775,
+          "distance_loss": 3.744266007522637
+        }
+      ],
+      "train_accuracy": {
+        "action_accuracy": 0.31128747795414463,
+        "action_loss": 1.3777639214113697,
+        "distance_loss": 3.7252753054233665,
+        "examples": 1134
+      },
+      "eval_accuracy": {
+        "action_accuracy": 0.2924791086350975,
+        "action_loss": 1.3837390596820118,
+        "distance_loss": 3.938325876645059,
+        "examples": 359
+      },
+      "rollout": {
+        "solved": 0,
+        "total": 12,
+        "success_rate": 0.0,
+        "time_s": 70.96661909999966,
+        "cache_entries": 1095,
+        "results": [
+          {
+            "puzzle": "Two Goals.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 184
+          },
+          {
+            "puzzle": "Insert Tool.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 171
+          },
+          {
+            "puzzle": "Mini Minefield.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 186
+          },
+          {
+            "puzzle": "Simple Tool.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 182
+          },
+          {
+            "puzzle": "Walk Past.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 181
+          },
+          {
+            "puzzle": "Three Goals.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 181
+          },
+          {
+            "puzzle": "Choose Wisely.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 192
+          },
+          {
+            "puzzle": "Pulling.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 100
+          },
+          {
+            "puzzle": "Interlocking Pieces.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 149
+          },
+          {
+            "puzzle": "Swiss Army Knife.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 171
+          },
+          {
+            "puzzle": "Tool Train.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 186
+          },
+          {
+            "puzzle": "Multiple Goals.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 163
+          }
+        ]
+      }
+    },
+    {
+      "name": "optimized_conv_log_cuda",
+      "device": "cuda",
+      "encoder_stem": "conv",
+      "distance_target": "log",
+      "dropout": 0.01,
+      "d_model": 32,
+      "layers": 1,
+      "epochs": 8,
+      "distance_bins": 7,
+      "parameters": 92971,
+      "train_time_s": 58.23357399999804,
+      "train_examples_per_s": 155.7864197035254,
+      "peak_cuda_memory_mb": 253.84130859375,
+      "epoch_metrics": [
+        {
+          "epoch": 1.0,
+          "time_s": 7.209509200001776,
+          "examples_per_s": 157.29226061598212,
+          "loss": 1.677525633016381,
+          "action_loss": 1.399829174475695,
+          "distance_loss": 1.3884822186969576
+        },
+        {
+          "epoch": 2.0,
+          "time_s": 7.158517399999255,
+          "examples_per_s": 158.41269031491325,
+          "loss": 1.6485770461420532,
+          "action_loss": 1.4053959657275488,
+          "distance_loss": 1.2159054159487366
+        },
+        {
+          "epoch": 3.0,
+          "time_s": 7.152317699998093,
+          "examples_per_s": 158.55000400783405,
+          "loss": 1.624558491471373,
+          "action_loss": 1.3851219100296182,
+          "distance_loss": 1.197182880507575
+        },
+        {
+          "epoch": 4.0,
+          "time_s": 7.165609299998323,
+          "examples_per_s": 158.25590714250433,
+          "loss": 1.6210209902842418,
+          "action_loss": 1.3833275900946722,
+          "distance_loss": 1.1884670240748707
+        },
+        {
+          "epoch": 5.0,
+          "time_s": 7.448983399997815,
+          "examples_per_s": 152.2355386105885,
+          "loss": 1.6037027644522397,
+          "action_loss": 1.3679775354933696,
+          "distance_loss": 1.178626117462414
+        },
+        {
+          "epoch": 6.0,
+          "time_s": 7.347450900000695,
+          "examples_per_s": 154.33924165452984,
+          "loss": 1.5028298786287795,
+          "action_loss": 1.2711401008844796,
+          "distance_loss": 1.1584488468826133
+        },
+        {
+          "epoch": 7.0,
+          "time_s": 7.344678800000111,
+          "examples_per_s": 154.39749386998147,
+          "loss": 1.3093163378444719,
+          "action_loss": 1.077995272750787,
+          "distance_loss": 1.156605264917673
+        },
+        {
+          "epoch": 8.0,
+          "time_s": 7.40555289999611,
+          "examples_per_s": 153.12833698083443,
+          "loss": 1.1517490875994296,
+          "action_loss": 0.9233814269777328,
+          "distance_loss": 1.1418383180359264
+        }
+      ],
+      "train_accuracy": {
+        "action_accuracy": 0.6904761904761905,
+        "action_loss": 0.7839113938535122,
+        "distance_loss": 1.1199084791556868,
+        "examples": 1134
+      },
+      "eval_accuracy": {
+        "action_accuracy": 0.4428969359331476,
+        "action_loss": 1.4183296001721226,
+        "distance_loss": 1.2574612875170694,
+        "examples": 359
+      },
+      "rollout": {
+        "solved": 0,
+        "total": 12,
+        "success_rate": 0.0,
+        "time_s": 111.57663760000287,
+        "cache_entries": 2752,
+        "results": [
+          {
+            "puzzle": "Two Goals.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 182
+          },
+          {
+            "puzzle": "Insert Tool.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 183
+          },
+          {
+            "puzzle": "Mini Minefield.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 30
+          },
+          {
+            "puzzle": "Simple Tool.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 162
+          },
+          {
+            "puzzle": "Walk Past.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 134
+          },
+          {
+            "puzzle": "Three Goals.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 132
+          },
+          {
+            "puzzle": "Choose Wisely.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 191
+          },
+          {
+            "puzzle": "Pulling.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 119
+          },
+          {
+            "puzzle": "Interlocking Pieces.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 90
+          },
+          {
+            "puzzle": "Swiss Army Knife.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 141
+          },
+          {
+            "puzzle": "Tool Train.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 193
+          },
+          {
+            "puzzle": "Multiple Goals.pwp",
+            "solved": false,
+            "steps": 200,
+            "repeated_states": 93
+          }
+        ]
+      }
+    }
+  ]
+}

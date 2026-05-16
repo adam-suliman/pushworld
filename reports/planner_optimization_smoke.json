@@ -1,0 +1,164 @@
+{
+  "config": {
+    "train_count": 4,
+    "eval_count": 2,
+    "epochs": 1,
+    "batch_size": 8,
+    "lr": 0.001,
+    "distance_loss_weight": 0.2,
+    "d_model": 16,
+    "layers": 1,
+    "max_steps": 50,
+    "beam_width": 2,
+    "beam_depth": 2,
+    "top_k": 3,
+    "repeat_penalty": 1.0,
+    "seed": 3,
+    "output": "reports\\planner_optimization_smoke.json",
+    "include_cpu": false
+  },
+  "environment": {
+    "python": "3.13.3 (tags/v3.13.3:6280bb5, Apr  8 2025, 14:47:33) [MSC v.1943 64 bit (AMD64)]",
+    "torch": "2.10.0.dev20251006+cu130",
+    "cuda_available": true,
+    "cuda_device": "NVIDIA GeForce RTX 2060"
+  },
+  "data": {
+    "source": "external/pushworld benchmark level1 reference solutions",
+    "train_puzzles": 4,
+    "eval_puzzles": 2,
+    "train_examples": 149,
+    "eval_examples": 42,
+    "height": 17,
+    "width": 14,
+    "train_puzzle_names": [
+      "Swap Places.pwp",
+      "Seeing Red.pwp",
+      "Box Walls.pwp",
+      "Hockey Stick.pwp"
+    ],
+    "eval_puzzle_names": [
+      "Cage Door.pwp",
+      "Obstacle Has Obstacle.pwp"
+    ]
+  },
+  "total_time_s": 3.1181844000020646,
+  "results": [
+    {
+      "name": "baseline_linear_exact_cuda",
+      "device": "cuda",
+      "encoder_stem": "linear",
+      "distance_target": "linear",
+      "dropout": 0.0,
+      "d_model": 16,
+      "layers": 1,
+      "epochs": 1,
+      "distance_bins": 51,
+      "parameters": 8183,
+      "train_time_s": 0.2818224000002374,
+      "train_examples_per_s": 528.7017639473459,
+      "peak_cuda_memory_mb": 25.044921875,
+      "epoch_metrics": [
+        {
+          "epoch": 1.0,
+          "time_s": 0.2817219999997178,
+          "examples_per_s": 528.8901825208867,
+          "loss": 2.2358991251695874,
+          "action_loss": 1.4439494257805332,
+          "distance_loss": 3.959748285728813
+        }
+      ],
+      "train_accuracy": {
+        "action_accuracy": 0.28187919463087246,
+        "action_loss": 1.3834763533317003,
+        "distance_loss": 3.9505773070674612,
+        "examples": 149
+      },
+      "eval_accuracy": {
+        "action_accuracy": 0.19047619047619047,
+        "action_loss": 1.406431135677156,
+        "distance_loss": 3.984503780092512,
+        "examples": 42
+      },
+      "rollout": {
+        "solved": 0,
+        "total": 2,
+        "success_rate": 0.0,
+        "time_s": 0.4968665999986115,
+        "cache_entries": 22,
+        "results": [
+          {
+            "puzzle": "Cage Door.pwp",
+            "solved": false,
+            "steps": 50,
+            "repeated_states": 44
+          },
+          {
+            "puzzle": "Obstacle Has Obstacle.pwp",
+            "solved": false,
+            "steps": 50,
+            "repeated_states": 46
+          }
+        ]
+      }
+    },
+    {
+      "name": "optimized_conv_log_cuda",
+      "device": "cuda",
+      "encoder_stem": "conv",
+      "distance_target": "log",
+      "dropout": 0.01,
+      "d_model": 16,
+      "layers": 1,
+      "epochs": 1,
+      "distance_bins": 5,
+      "parameters": 10617,
+      "train_time_s": 0.26721289999841247,
+      "train_examples_per_s": 557.6078101052951,
+      "peak_cuda_memory_mb": 25.08203125,
+      "epoch_metrics": [
+        {
+          "epoch": 1.0,
+          "time_s": 0.26712419999967096,
+          "examples_per_s": 557.7929667180417,
+          "loss": 1.7041921407584375,
+          "action_loss": 1.431861860640097,
+          "distance_loss": 1.3616513685892093
+        }
+      ],
+      "train_accuracy": {
+        "action_accuracy": 0.2214765100671141,
+        "action_loss": 1.3930638012470016,
+        "distance_loss": 1.2378893538609448,
+        "examples": 149
+      },
+      "eval_accuracy": {
+        "action_accuracy": 0.2857142857142857,
+        "action_loss": 1.3802562952041626,
+        "distance_loss": 1.223910547438122,
+        "examples": 42
+      },
+      "rollout": {
+        "solved": 0,
+        "total": 2,
+        "success_rate": 0.0,
+        "time_s": 0.601282200004789,
+        "cache_entries": 38,
+        "results": [
+          {
+            "puzzle": "Cage Door.pwp",
+            "solved": false,
+            "steps": 50,
+            "repeated_states": 31
+          },
+          {
+            "puzzle": "Obstacle Has Obstacle.pwp",
+            "solved": false,
+            "steps": 50,
+            "repeated_states": 45
+          }
+        ]
+      }
+    }
+  ]
+}

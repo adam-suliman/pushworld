@@ -8,6 +8,7 @@ import torch
 from tqdm.auto import tqdm
 
 from planner_imitation_rollout import choose_action
+from planner_imitation_rollout import BEAM_SCORE_MODES, DISTANCE_TARGETS
 from pushworld_study.paths import PROJECT_ROOT, ensure_upstream_pushworld_on_path
 from train_planner_imitation_v2 import (
     ACTION_CHARS,
@@ -27,10 +28,15 @@ def load_checkpoint(checkpoint_path: Path, device: torch.device):
     args = checkpoint.get("args", {})
     height = int(checkpoint["height"])
     width = int(checkpoint["width"])
-    d_model = int(args.get("d_model", state_dict["token_proj.weight"].shape[0]))
+    encoder_stem = str(args.get("encoder_stem") or ("conv" if "conv_stem.0.weight" in state_dict else "linear"))
+    if encoder_stem == "conv":
+        d_model = int(args.get("d_model", state_dict["conv_stem.0.weight"].shape[0]))
+    else:
+        d_model = int(args.get("d_model", state_dict["token_proj.weight"].shape[0]))
     nhead = int(args.get("nhead", 4))
     layers = int(args.get("layers", 1))
     distance_bins = int(state_dict["distance_head.weight"].shape[0])
+    dropout = float(args.get("dropout", 0.0))
 
     model = BoardTransformerPolicy(
         channels=int(checkpoint.get("channels", 7)),
@@ -40,6 +46,8 @@ def load_checkpoint(checkpoint_path: Path, device: torch.device):
         nhead=nhead,
         layers=layers,
         distance_bins=distance_bins,
+        encoder_stem=encoder_stem,
+        dropout=dropout,
     )
     model.load_state_dict(state_dict)
     model.to(device)
@@ -60,6 +68,11 @@ def evaluate_split(
     max_cache_entries: int,
     split_name: str,
     repeat_penalty: float = 0.0,
+    distance_target: str = "linear",
+    distance_max_steps: int | None = None,
+    beam_score: str = "policy_distance",
+    distance_weight: float = 0.15,
+    beam_length_normalization: float = 0.0,
 ) -> dict[str, object]:
     solved = 0
     results = []
@@ -107,6 +120,11 @@ def evaluate_split(
                     max_cache_entries=max_cache_entries,
                     seen_states=seen,
                     repeat_penalty=repeat_penalty,
+                    distance_target=distance_target,
+                    distance_max_steps=distance_max_steps,
+                    beam_score=beam_score,
+                    distance_weight=distance_weight,
+                    beam_length_normalization=beam_length_normalization,
                 )
                 actions.append(ACTION_CHARS[action])
                 state = puzzle.get_next_state(state, action)
@@ -140,6 +158,10 @@ def evaluate_split(
         "beam_depth": beam_depth,
         "top_k": top_k,
         "repeat_penalty": repeat_penalty,
+        "distance_target": distance_target,
+        "beam_score": beam_score,
+        "distance_weight": distance_weight,
+        "beam_length_normalization": beam_length_normalization,
         "results": results,
     }
 
@@ -165,6 +187,15 @@ def main() -> None:
     parser.add_argument("--beam-depth", type=int, default=8)
     parser.add_argument("--top-k", type=int, default=3)
     parser.add_argument("--repeat-penalty", type=float, default=0.0)
+    parser.add_argument(
+        "--distance-target",
+        choices=("checkpoint", *DISTANCE_TARGETS),
+        default="checkpoint",
+        help="Override the checkpoint's value-head target mode for rollout scoring.",
+    )
+    parser.add_argument("--beam-score", choices=BEAM_SCORE_MODES, default="policy_distance")
+    parser.add_argument("--distance-weight", type=float, default=0.15)
+    parser.add_argument("--beam-length-normalization", type=float, default=0.0)
     parser.add_argument("--max-cache-entries", type=int, default=250_000)
     parser.add_argument("--device", choices=["auto", "cuda", "cpu"], default="auto")
     parser.add_argument("--output", type=Path, default=None)
@@ -174,6 +205,10 @@ def main() -> None:
 
     if args.repeat_penalty < 0.0:
         raise ValueError("--repeat-penalty must be >= 0")
+    if args.distance_weight < 0.0:
+        raise ValueError("--distance-weight must be >= 0")
+    if args.beam_length_normalization < 0.0:
+        raise ValueError("--beam-length-normalization must be >= 0")
 
     if args.device == "auto":
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -182,12 +217,20 @@ def main() -> None:
 
     puzzle_paths = select_puzzles(args.eval_dir, args.eval_puzzles, args.all_eval)
     model, height, width, checkpoint_args = load_checkpoint(args.checkpoint, device)
+    checkpoint_distance_target = str(checkpoint_args.get("distance_target", "linear"))
+    distance_target = checkpoint_distance_target if args.distance_target == "checkpoint" else args.distance_target
+    distance_max_steps = int(checkpoint_args.get("max_steps", args.max_steps))
 
     print(f"device={device}")
     print(f"checkpoint={args.checkpoint}")
     print(f"checkpoint_board=height:{height}, width:{width}")
     print("eval_dirs=" + json.dumps([str(path) for path in args.eval_dir], indent=2))
-    print(f"eval_puzzles={len(puzzle_paths)} max_steps={args.max_steps} repeat_penalty={args.repeat_penalty}")
+    print(
+        f"eval_puzzles={len(puzzle_paths)} max_steps={args.max_steps} "
+        f"repeat_penalty={args.repeat_penalty} distance_target={distance_target} "
+        f"beam_score={args.beam_score} distance_weight={args.distance_weight} "
+        f"beam_length_normalization={args.beam_length_normalization}"
+    )
 
     result = evaluate_split(
         model,
@@ -202,6 +245,11 @@ def main() -> None:
         args.max_cache_entries,
         args.split_name,
         args.repeat_penalty,
+        distance_target,
+        distance_max_steps,
+        args.beam_score,
+        args.distance_weight,
+        args.beam_length_normalization,
     )
 
     summary = dict(result)

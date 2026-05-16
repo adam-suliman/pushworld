@@ -1,0 +1,43 @@
+diff --git a/cpp/include/heuristics/recursive_graph_distance.h b/cpp/include/heuristics/recursive_graph_distance.h
+index e989e72..3b448b7 100644
+--- a/cpp/include/heuristics/recursive_graph_distance.h
++++ b/cpp/include/heuristics/recursive_graph_distance.h
+@@ -40,10 +40,10 @@ struct PushingCostCacheKey {
+   Position2D pushee_end_position;
+ 
+   bool operator==(const PushingCostCacheKey& other) const {
+-    return (pusher_id == other.pusher_id and
+-            pusher_position == other.pusher_position and
+-            pushee_id == other.pushee_id and
+-            pushee_start_position == other.pushee_start_position and
++    return (pusher_id == other.pusher_id &&
++            pusher_position == other.pusher_position &&
++            pushee_id == other.pushee_id &&
++            pushee_start_position == other.pushee_start_position &&
+             pushee_end_position == other.pushee_end_position);
+   };
+ };
+diff --git a/cpp/src/heuristics/domain_transition_graph.cc b/cpp/src/heuristics/domain_transition_graph.cc
+index 7971e7e..44f10f7 100644
+--- a/cpp/src/heuristics/domain_transition_graph.cc
++++ b/cpp/src/heuristics/domain_transition_graph.cc
+@@ -37,8 +37,8 @@ struct Transition {
+   Position2D end_position;
+ 
+   bool operator==(const Transition& other) const {
+-    return (object_id == other.object_id and
+-            start_position == other.start_position and
++    return (object_id == other.object_id &&
++            start_position == other.start_position &&
+             end_position == other.end_position);
+   };
+ };
+@@ -188,7 +188,7 @@ build_feasible_movement_graphs(const PushWorldPuzzle& puzzle) {
+           // Check whether the pusher's transition is already proven to be
+           // feasible.
+           const auto& end_positions = pusher_graph->find(start_position);
+-          if (end_positions == pusher_graph->end() or
++          if (end_positions == pusher_graph->end() ||
+               end_positions->second.find(end_position) ==
+                   end_positions->second.end()) {
+             // Not yet proven to be feasible, so record the pusher's

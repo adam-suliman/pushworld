@@ -17,7 +17,14 @@ from torch import nn
 from torch.utils.data import DataLoader, Dataset
 from tqdm.auto import tqdm
 
-from planner_imitation_rollout import choose_action, encode_state
+from planner_imitation_rollout import (
+    BEAM_SCORE_MODES,
+    DISTANCE_TARGETS,
+    auto_distance_bins,
+    choose_action,
+    distance_targets,
+    encode_state,
+)
 from pushworld_study.paths import PROJECT_ROOT, ensure_upstream_pushworld_on_path
 
 
@@ -175,18 +182,31 @@ class BoardTransformerPolicy(nn.Module):
         nhead: int = 4,
         layers: int = 2,
         distance_bins: int = 101,
+        encoder_stem: str = "linear",
+        dropout: float = 0.0,
     ) -> None:
         super().__init__()
+        if encoder_stem not in ("linear", "conv"):
+            raise ValueError("--encoder-stem must be either 'linear' or 'conv'")
         self.height = height
         self.width = width
-        self.token_proj = nn.Linear(channels, d_model)
+        self.encoder_stem = encoder_stem
+        if encoder_stem == "conv":
+            self.conv_stem = nn.Sequential(
+                nn.Conv2d(channels, d_model, kernel_size=3, padding=1),
+                nn.GELU(),
+                nn.Conv2d(d_model, d_model, kernel_size=3, padding=1),
+                nn.GELU(),
+            )
+        else:
+            self.token_proj = nn.Linear(channels, d_model)
         self.pos_embed = nn.Parameter(torch.zeros(1, height * width + 1, d_model))
         self.cls = nn.Parameter(torch.zeros(1, 1, d_model))
         encoder_layer = nn.TransformerEncoderLayer(
             d_model=d_model,
             nhead=nhead,
             dim_feedforward=d_model * 4,
-            dropout=0.0,
+            dropout=dropout,
             batch_first=True,
             norm_first=True,
         )
@@ -196,8 +216,11 @@ class BoardTransformerPolicy(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         batch = x.shape[0]
-        tokens = x.permute(0, 2, 3, 1).reshape(batch, self.height * self.width, -1)
-        tokens = self.token_proj(tokens)
+        if self.encoder_stem == "conv":
+            tokens = self.conv_stem(x).flatten(2).transpose(1, 2)
+        else:
+            tokens = x.permute(0, 2, 3, 1).reshape(batch, self.height * self.width, -1)
+            tokens = self.token_proj(tokens)
         cls = self.cls.expand(batch, -1, -1)
         tokens = torch.cat([cls, tokens], dim=1) + self.pos_embed
         encoded = self.encoder(tokens)
@@ -337,6 +360,10 @@ def train(
     top_k: int,
     max_cache_entries: int,
     repeat_penalty: float,
+    distance_target: str,
+    beam_score: str,
+    distance_weight: float,
+    beam_length_normalization: float,
     quick_eval_every: int,
     log_every_batches: int,
     amp: bool,
@@ -378,7 +405,11 @@ def train(
                 global_step += 1
                 states = states.to(device)
                 actions = actions.to(device)
-                remaining = remaining.to(device).clamp_max(model.distance_head.out_features - 1)
+                remaining = distance_targets(
+                    remaining.to(device),
+                    model.distance_head.out_features,
+                    distance_target,
+                )
                 with torch.amp.autocast("cuda", enabled=amp and device.type == "cuda"):
                     action_logits, distance_logits = model(states)
                     action_loss = nn.functional.cross_entropy(action_logits, actions)
@@ -417,6 +448,11 @@ def train(
                     f"quick epoch {current_epoch}",
                     max_cache_entries,
                     repeat_penalty,
+                    distance_target,
+                    max_steps,
+                    beam_score,
+                    distance_weight,
+                    beam_length_normalization,
                     leave=False,
                 )
                 success_rate = quick_eval["solved"] / max(1, quick_eval["total"])
@@ -463,6 +499,11 @@ def evaluate(
     label: str,
     max_cache_entries: int,
     repeat_penalty: float = 0.0,
+    distance_target: str = "linear",
+    distance_max_steps: int | None = None,
+    beam_score: str = "policy_distance",
+    distance_weight: float = 0.15,
+    beam_length_normalization: float = 0.0,
     leave: bool = True,
 ) -> dict[str, object]:
     model.eval()
@@ -496,6 +537,11 @@ def evaluate(
                     max_cache_entries=max_cache_entries,
                     seen_states=seen,
                     repeat_penalty=repeat_penalty,
+                    distance_target=distance_target,
+                    distance_max_steps=distance_max_steps,
+                    beam_score=beam_score,
+                    distance_weight=distance_weight,
+                    beam_length_normalization=beam_length_normalization,
                 )
                 actions.append(ACTION_CHARS[action])
                 state = puzzle.get_next_state(state, action)
@@ -526,6 +572,10 @@ def evaluate(
         "time_s": time.perf_counter() - start,
         "cache_entries": len(encode_cache),
         "repeat_penalty": repeat_penalty,
+        "distance_target": distance_target,
+        "beam_score": beam_score,
+        "distance_weight": distance_weight,
+        "beam_length_normalization": beam_length_normalization,
         "results": results,
     }
 
@@ -579,6 +629,25 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--lr", type=float, default=3e-4)
     parser.add_argument("--distance-loss-weight", type=float, default=0.2)
+    parser.add_argument(
+        "--distance-target",
+        choices=DISTANCE_TARGETS,
+        default="log",
+        help="Remaining-step target encoding for the auxiliary value head.",
+    )
+    parser.add_argument(
+        "--distance-bins",
+        type=int,
+        default=0,
+        help="Value-head bins. 0 picks max_steps+1 for linear or a compact log scale for log targets.",
+    )
+    parser.add_argument(
+        "--encoder-stem",
+        choices=["linear", "conv"],
+        default="conv",
+        help="Use a linear per-cell projection or a local convolutional board encoder before the transformer.",
+    )
+    parser.add_argument("--dropout", type=float, default=0.01, help="Transformer dropout probability.")
     parser.add_argument("--d-model", type=int, default=96)
     parser.add_argument("--nhead", type=int, default=4)
     parser.add_argument("--layers", type=int, default=2)
@@ -592,6 +661,24 @@ def main() -> None:
         type=float,
         default=0.0,
         help="Add this beam cost when a rollout candidate revisits a state already seen in the current rollout.",
+    )
+    parser.add_argument(
+        "--beam-score",
+        choices=BEAM_SCORE_MODES,
+        default="policy_distance",
+        help="Beam ranking objective: policy cost, value distance, or the weighted combination.",
+    )
+    parser.add_argument(
+        "--distance-weight",
+        type=float,
+        default=0.15,
+        help="Weight for the auxiliary distance estimate in policy_distance beam scoring.",
+    )
+    parser.add_argument(
+        "--beam-length-normalization",
+        type=float,
+        default=0.0,
+        help="Divide cumulative policy cost by path_length^N before beam ranking; 0 preserves old scoring.",
     )
     parser.add_argument("--eval-every", type=int, default=0, help="Run quick held-out Level 0 eval every N epochs; 0 disables it.")
     parser.add_argument("--eval-puzzles", type=int, default=50, help="Number of held-out Level 0 puzzles for periodic quick eval.")
@@ -621,6 +708,11 @@ def main() -> None:
     )
     parser.add_argument("--tensorboard-log", type=Path, default=None)
     parser.add_argument("--skip-train-eval", action="store_true")
+    parser.add_argument(
+        "--skip-final-eval",
+        action="store_true",
+        help="Skip train/test/Level-1 rollout evaluation after training and save the checkpoint immediately.",
+    )
     parser.add_argument("--print-expert-plans", action="store_true")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--planner-time-limit", type=float, default=10.0)
@@ -633,6 +725,14 @@ def main() -> None:
         raise ValueError("--planner-workers must be >= 1")
     if args.repeat_penalty < 0.0:
         raise ValueError("--repeat-penalty must be >= 0")
+    if args.distance_bins < 0:
+        raise ValueError("--distance-bins must be >= 0")
+    if args.distance_weight < 0.0:
+        raise ValueError("--distance-weight must be >= 0")
+    if args.beam_length_normalization < 0.0:
+        raise ValueError("--beam-length-normalization must be >= 0")
+    if not 0.0 <= args.dropout < 1.0:
+        raise ValueError("--dropout must be in [0, 1)")
 
     if args.augment_transforms == "all":
         train_transforms = SYMMETRY_TRANSFORMS if args.level0_symmetry_augment else ("r0",)
@@ -674,6 +774,13 @@ def main() -> None:
     print(
         f"board={height}x{width} planner={args.planner} "
         f"planner_workers={args.planner_workers} repeat_penalty={args.repeat_penalty}"
+    )
+    distance_bins = args.distance_bins or auto_distance_bins(args.max_steps, args.distance_target)
+    print(
+        f"model encoder_stem={args.encoder_stem} dropout={args.dropout} "
+        f"distance_target={args.distance_target} distance_bins={distance_bins} "
+        f"beam_score={args.beam_score} distance_weight={args.distance_weight} "
+        f"beam_length_normalization={args.beam_length_normalization}"
     )
     writer = make_tensorboard_writer(args.tensorboard_log)
     if writer is not None:
@@ -741,7 +848,9 @@ def main() -> None:
         d_model=args.d_model,
         nhead=args.nhead,
         layers=args.layers,
-        distance_bins=args.max_steps + 1,
+        distance_bins=distance_bins,
+        encoder_stem=args.encoder_stem,
+        dropout=args.dropout,
     ).to(device)
     resume_epoch = 0
     resume_global_step = 0
@@ -844,6 +953,10 @@ def main() -> None:
             args.top_k,
             args.max_cache_entries,
             args.repeat_penalty,
+            args.distance_target,
+            args.beam_score,
+            args.distance_weight,
+            args.beam_length_normalization,
             args.eval_every,
             args.log_every_batches,
             args.amp,
@@ -868,12 +981,36 @@ def main() -> None:
             writer.close()
         return
 
-    if args.skip_train_eval:
+    if args.skip_final_eval:
         train_eval = {"skipped": True, "solved": None, "total": len(train_paths)}
+        test_eval = {"skipped": True, "solved": None, "total": len(test_paths)}
+        level1_eval = {"skipped": True, "solved": None, "total": len(level1_paths)}
     else:
-        train_eval = evaluate(
+        if args.skip_train_eval:
+            train_eval = {"skipped": True, "solved": None, "total": len(train_paths)}
+        else:
+            train_eval = evaluate(
+                model,
+                train_paths,
+                height,
+                width,
+                device,
+                args.max_steps,
+                args.beam_width,
+                args.beam_depth,
+                args.top_k,
+                "train",
+                args.max_cache_entries,
+                args.repeat_penalty,
+                args.distance_target,
+                args.max_steps,
+                args.beam_score,
+                args.distance_weight,
+                args.beam_length_normalization,
+            )
+        test_eval = evaluate(
             model,
-            train_paths,
+            test_paths,
             height,
             width,
             device,
@@ -881,38 +1018,34 @@ def main() -> None:
             args.beam_width,
             args.beam_depth,
             args.top_k,
-            "train",
+            "level0 test",
             args.max_cache_entries,
             args.repeat_penalty,
+            args.distance_target,
+            args.max_steps,
+            args.beam_score,
+            args.distance_weight,
+            args.beam_length_normalization,
         )
-    test_eval = evaluate(
-        model,
-        test_paths,
-        height,
-        width,
-        device,
-        args.max_steps,
-        args.beam_width,
-        args.beam_depth,
-        args.top_k,
-        "level0 test",
-        args.max_cache_entries,
-        args.repeat_penalty,
-    )
-    level1_eval = evaluate(
-        model,
-        level1_paths,
-        height,
-        width,
-        device,
-        args.max_steps,
-        args.beam_width,
-        args.beam_depth,
-        args.top_k,
-        "level1",
-        args.max_cache_entries,
-        args.repeat_penalty,
-    )
+        level1_eval = evaluate(
+            model,
+            level1_paths,
+            height,
+            width,
+            device,
+            args.max_steps,
+            args.beam_width,
+            args.beam_depth,
+            args.top_k,
+            "level1",
+            args.max_cache_entries,
+            args.repeat_penalty,
+            args.distance_target,
+            args.max_steps,
+            args.beam_score,
+            args.distance_weight,
+            args.beam_length_normalization,
+        )
 
     def compact_eval(payload: dict[str, object]) -> dict[str, object]:
         if payload.get("skipped"):
@@ -945,10 +1078,17 @@ def main() -> None:
         "d_model": args.d_model,
         "nhead": args.nhead,
         "layers": args.layers,
+        "encoder_stem": args.encoder_stem,
+        "dropout": args.dropout,
+        "distance_target": args.distance_target,
+        "distance_bins": distance_bins,
         "amp": args.amp,
         "seed": args.seed,
         "planner_workers": args.planner_workers,
         "repeat_penalty": args.repeat_penalty,
+        "beam_score": args.beam_score,
+        "distance_weight": args.distance_weight,
+        "beam_length_normalization": args.beam_length_normalization,
         "max_cache_entries": args.max_cache_entries,
         "train_eval": compact_eval(train_eval),
         "level0_test_eval": compact_eval(test_eval),

@@ -131,6 +131,15 @@ Already implemented:
 - cached Level 1 augmentation builder that splits source symmetry groups before
   generating variants, preventing train/test leakage through rotated or mirrored
   copies.
+- Wheeler-inspired v2 model defaults:
+  - `--encoder-stem conv` adds a local convolutional board encoder before the
+    transformer tokens, matching the blog post's image-like board encoder idea;
+  - `--distance-target log` trains the remaining-steps head on compact
+    log-spaced bins instead of sparse exact step counts;
+  - `--dropout 0.01` mirrors the small regularization used in the post.
+- Beam ranking is now configurable through `--beam-score`, `--distance-weight`,
+  and `--beam-length-normalization`. The default `policy_distance` with
+  `--distance-weight 0.15` preserves the previous policy-plus-value behavior.
 
 Repeat penalty details:
 
@@ -144,6 +153,32 @@ Repeat penalty details:
 Suggested first comparison values are `0.0`, `1.0`, and `2.0`. Beam scores are
 negative log-probability plus a small value-head distance term, so `2.0` is a
 meaningful but non-infinite penalty.
+
+Suggested first beam-ranking ablation for a fixed checkpoint:
+
+```bash
+CKPT=models/planner_imitation_all_level0_l1cache_lazyaug_seed1.pt
+for score in policy policy_distance distance; do
+  uv run python -u scripts/eval_planner_imitation.py \
+    --checkpoint "$CKPT" \
+    --eval-dir data/level0/base/test \
+    --split-name "level0_base_test_${score}" \
+    --all-eval \
+    --max-steps 200 \
+    --beam-width 8 \
+    --beam-depth 8 \
+    --top-k 3 \
+    --repeat-penalty 0 \
+    --beam-score "$score" \
+    --distance-weight 0.15 \
+    --beam-length-normalization 0.0 \
+    --output "reports/beam_score_${score}.json"
+done
+```
+
+Keep `--beam-width`, `--beam-depth`, `--top-k`, `--repeat-penalty`, and
+`--max-steps` fixed when measuring whether the alternative ranking preserves
+the solved percentage.
 
 The current beam evaluator is still Python-heavy. The cache/pruning changes
 should reduce repeated encoding and wasted beam branches, but the exact speedup

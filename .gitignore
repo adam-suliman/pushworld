@@ -21,4 +21,13 @@ runs/
 models/
 .matplotlib/
 data/
-reports/
+
+# Local training data archives.
+level0.zip
+
+# Keep generated reports commit-friendly, but do not track logs or other bulky
+# scratch artifacts unless explicitly force-added.
+reports/*
+!reports/*.md
+!reports/*.json
+reports/*.log

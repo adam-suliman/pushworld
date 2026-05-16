@@ -18,7 +18,7 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 from eval_planner_imitation import load_checkpoint
-from planner_imitation_rollout import choose_action
+from planner_imitation_rollout import BEAM_SCORE_MODES, choose_action
 from train_planner_imitation_v2 import (
     ACTION_CHARS,
 )
@@ -135,6 +135,11 @@ def rollout_policy(
     beam_depth: int,
     top_k: int,
     repeat_penalty: float,
+    distance_target: str,
+    distance_max_steps: int,
+    beam_score: str,
+    distance_weight: float,
+    beam_length_normalization: float,
 ) -> dict[str, object]:
     state = puzzle.initial_state
     frames = [puzzle.render(state)]
@@ -164,6 +169,11 @@ def rollout_policy(
                 max_cache_entries=50_000,
                 seen_states=seen,
                 repeat_penalty=repeat_penalty,
+                distance_target=distance_target,
+                distance_max_steps=distance_max_steps,
+                beam_score=beam_score,
+                distance_weight=distance_weight,
+                beam_length_normalization=beam_length_normalization,
             )
             next_state = puzzle.get_next_state(state, action)
             no_op = next_state == state
@@ -192,6 +202,10 @@ def rollout_policy(
         "frames": frames,
         "repeated_states": repeated_states,
         "repeat_penalty": repeat_penalty,
+        "distance_target": distance_target,
+        "beam_score": beam_score,
+        "distance_weight": distance_weight,
+        "beam_length_normalization": beam_length_normalization,
         "time_s": elapsed,
     }
 
@@ -377,6 +391,21 @@ def main() -> None:
             value=0.0,
             step=0.5,
         )
+        beam_score = st.selectbox("Beam score", BEAM_SCORE_MODES, index=BEAM_SCORE_MODES.index("policy_distance"))
+        distance_weight = st.number_input(
+            "Distance weight",
+            min_value=0.0,
+            max_value=10.0,
+            value=0.15,
+            step=0.05,
+        )
+        beam_length_normalization = st.number_input(
+            "Length normalization",
+            min_value=0.0,
+            max_value=2.0,
+            value=0.0,
+            step=0.1,
+        )
         fps = st.slider("Playback FPS", min_value=0.5, max_value=10.0, value=2.0, step=0.5)
 
         st.header("Planner")
@@ -418,6 +447,8 @@ def main() -> None:
     run_clicked = st.button("Run model rollout", type="primary")
     if run_clicked:
         model, height, width, device, checkpoint_args = load_policy(str(checkpoint), device_name)
+        distance_target = str(checkpoint_args.get("distance_target", "linear"))
+        distance_max_steps = int(checkpoint_args.get("max_steps", max_steps))
         if puzzle.dimensions[1] > height or puzzle.dimensions[0] > width:
             st.error(
                 f"Puzzle is larger than checkpoint padding: puzzle={puzzle.dimensions}, "
@@ -438,6 +469,11 @@ def main() -> None:
                 int(beam_depth),
                 int(top_k),
                 float(repeat_penalty),
+                distance_target,
+                distance_max_steps,
+                str(beam_score),
+                float(distance_weight),
+                float(beam_length_normalization),
             )
         result["checkpoint_args"] = checkpoint_args
         st.session_state.last_rollout = result

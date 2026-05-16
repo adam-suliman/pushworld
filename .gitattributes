@@ -1,0 +1,17 @@
+# Keep source, docs, reports, and patch files stable across Windows/Linux.
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.patch text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.txt text eol=lf
+*.sh text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+
+# Windows command files are expected to use CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
