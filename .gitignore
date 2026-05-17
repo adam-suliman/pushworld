@@ -22,6 +22,9 @@ models/
 .matplotlib/
 data/
 
+# Local experiment runner scripts.
+scripts/run_*.ps1
+
 # Local training data archives.
 level0.zip
 

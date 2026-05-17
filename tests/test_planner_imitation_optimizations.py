@@ -35,6 +35,7 @@ if "pushworld.puzzle" not in sys.modules:
 from planner_imitation_rollout import (  # noqa: E402
     RolloutProfile,
     auto_distance_bins,
+    best_first_search,
     beam_rank_score,
     distance_bin_values,
     distance_targets,
@@ -168,3 +169,57 @@ def test_predict_batch_caches_duplicate_model_outputs() -> None:
     assert len(prediction_cache) == 1
     assert profile.model_forward_states == 1
     assert profile.prediction_cache_hits == 1
+
+
+
+def test_best_first_search_finds_policy_guided_path() -> None:
+    class _Movable:
+        cells = {(0, 0)}
+
+    class _Puzzle:
+        wall_positions: list[tuple[int, int]] = []
+        agent_wall_positions: list[tuple[int, int]] = []
+        movable_objects = [_Movable()]
+        goal_state: tuple[tuple[int, int], ...] = ()
+
+        def get_next_state(self, state, action: int):
+            x, y = state[0]
+            if action == 1:
+                x = min(2, x + 1)
+            elif action == 0:
+                x = max(0, x - 1)
+            return ((x, y),)
+
+        def is_goal_state(self, state) -> bool:
+            return state[0] == (2, 0)
+
+    class _RightModel(torch.nn.Module):
+        def forward(self, states: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+            action_logits = torch.full((states.shape[0], 4), -4.0)
+            action_logits[:, 1] = 4.0
+            distance_logits = torch.zeros(states.shape[0], 4)
+            return action_logits, distance_logits
+
+    profile = RolloutProfile()
+    result = best_first_search(
+        model=_RightModel(),
+        puzzle=_Puzzle(),
+        state=((0, 0),),
+        height=1,
+        width=3,
+        device=torch.device("cpu"),
+        puzzle_key="toy",
+        encode_cache={},
+        max_cache_entries=100,
+        node_budget=8,
+        batch_size=2,
+        top_k=2,
+        max_depth=4,
+        prediction_cache={},
+        profile=profile,
+    )
+
+    assert result.solved
+    assert result.path == (1, 1)
+    assert profile.best_first_nodes_expanded > 0
+    assert profile.best_first_nodes_generated > 0

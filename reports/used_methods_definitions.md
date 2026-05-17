@@ -1,254 +1,230 @@
 # Used Methods And Definitions
 
+This file is the compact glossary for the PushWorld planner-imitation
+experiments. Detailed numbers live in:
 
+- `reports/planner_optimization_analysis.md`
+- `reports/planner_imitation_time_optimization_results.md`
 
-
-## Method Definitions
+## Data And Expert Source
 
 **PushWorld puzzle**
 
-A grid puzzle loaded from a `.pwp` file through the upstream `pushworld`
-package. The model sees a padded board tensor and chooses one of four actions:
-left, right, up, or down (`L`, `R`, `U`, `D`).
+A `.pwp` grid puzzle loaded through the upstream `pushworld` package. The
+agent chooses one of four actions: `L`, `R`, `U`, `D`.
 
-**Level 0 data**
+**Level0**
 
-Generated PushWorld puzzles in `data/level0`. The local archive `level0.zip`
-contains the variants `base`, `all`, `shapes`, `obstacles`, `goals`, `size`,
-and `walls`. Each variant has 2000 train puzzles and 200 test puzzles.
+Generated local data in `data/level0`. Each variant has 2000 train puzzles and
+200 test puzzles. The main variants used here were `base`, `all`, `shapes`,
+and `obstacles`.
 
-**Level 1 data**
+**Level1**
 
-The upstream hand-authored benchmark puzzles in
-`external/pushworld/benchmark/puzzles/level1`. The split used here has 68
+The upstream benchmark split in
+`external/pushworld/benchmark/puzzles/level1`, containing 68 hand-authored
 puzzles.
 
 **RGD / N+RGD planner**
 
-The expert solver used to produce imitation trajectories. We ran the upstream
-C++ executable as:
+The upstream C++ expert solver:
 
 ```powershell
 external\pushworld\cpp\build\bin\run_planner.exe N+RGD <puzzle.pwp>
 ```
 
-The planner emits a string of expert actions. We validate that the emitted plan
-solves the puzzle before turning it into training examples.
+It is used in two distinct ways:
+
+- to generate supervised imitation traces for Level0 training;
+- as a planner reference baseline on Level1.
+
+Every emitted plan is validated with `PushWorldPuzzle.is_valid_plan` before it
+is accepted. The final RGD reference run used a `10s` per-puzzle timeout and
+solved `68/68` Level1 puzzles.
+
+That `68/68` result is Level1-only. It is not directly comparable to the
+PushWorld paper's all-level benchmark curve over 223 puzzles from Levels 1-4.
+In a quick local `1s` per-puzzle all-level probe, the same `N+RGD` executable
+solved `108/223` and timed out on `115`.
+
+## Supervised Imitation Setup
 
 **Imitation trajectory**
 
-For a plan of length `T`, each step becomes one supervised example:
+For an expert plan of length `T`, each step becomes one training example:
 
-- input: current board state;
-- action target: the next expert action;
-- distance target: remaining plan steps, `T - step_index`.
-
+- input: encoded current state;
+- action target: next expert action;
+- distance target: remaining expert steps, `T - step_index`.
 
 **Board encoding**
 
-Each state is encoded as a 7-channel `float32` board tensor:
+Each state is encoded as a padded 7-channel board tensor:
 
-- channel 0: static walls;
-- channel 1: agent walls;
-- channel 2: controlled object / agent object;
-- channel 3: goal-associated movable objects;
-- channel 4: other movable objects;
-- channel 5: goal cells for goal-associated objects;
-- channel 6: already satisfied goal cells.
+| Channel | Meaning |
+| ---: | --- |
+| 0 | static walls |
+| 1 | agent walls |
+| 2 | controlled object / agent object |
+| 3 | goal-associated movable objects |
+| 4 | other movable objects |
+| 5 | goal cells |
+| 6 | already satisfied goal cells |
 
 **Transformer policy**
 
-The policy is a board transformer with:
-
-- a board stem that converts board cells to tokens;
-- learned positional embeddings plus a learned CLS token;
-- a `TransformerEncoder`;
-- an action head over `L/R/U/D`;
-- an auxiliary remaining-distance head.
-
-The training loss is:
+The model has a board stem, positional embeddings, a CLS token, a
+`TransformerEncoder`, an action head, and an auxiliary distance head. Training
+uses:
 
 ```text
-cross_entropy(action_logits, expert_action)
-+ distance_loss_weight * cross_entropy(distance_logits, remaining_distance_target)
+CE(action_logits, expert_action)
++ distance_loss_weight * CE(distance_logits, remaining_distance_target)
 ```
 
-In the main runs, `distance_loss_weight=0.2`.
+The main runs used `distance_loss_weight=0.2`.
 
-**Linear board stem**
+**Linear stem / linear distance**
 
-The original policy stem. Each cell's 7-channel feature vector is projected
-independently with a linear layer before the transformer.
+The original baseline configuration: per-cell linear projection and exact
+remaining-step classes `0..max_steps`.
 
-**Convolutional board stem**
+**Conv stem / log distance**
 
-The Wheeler-inspired policy stem. A small local encoder is applied before
-tokenization:
-
-```text
-Conv2d(7 -> d_model, 3x3, padding=1)
-GELU
-Conv2d(d_model -> d_model, 3x3, padding=1)
-GELU
-```
-
-This lets the model see local spatial patterns before the global transformer
-attention layers.
-
-**Linear distance target**
-
-The original auxiliary target. Remaining steps are exact integer classes:
-`0..max_steps`, so `max_steps=100` gives 101 distance classes.
-
-**Log distance target**
-
-The optimized auxiliary target. Remaining steps are converted to compact
-log-spaced classes:
+The optimized configuration: a two-layer local convolutional board stem before
+the transformer, plus compact log-spaced distance bins:
 
 ```text
 round(log(remaining_steps + 1))
 ```
 
-For `max_steps=100`, this uses 6 bins instead of 101. During beam scoring, bins
-are mapped back to approximate step values with `expm1(bin)`.
+For `max_steps=100`, this reduces the distance head from 101 exact classes to
+6 bins. During search scoring, bins are decoded back to approximate remaining
+steps.
+
+**Multi4 training set**
+
+The 8000-puzzle Level0 training mix:
+
+- `data/level0/base/train`
+- `data/level0/all/train`
+- `data/level0/shapes/train`
+- `data/level0/obstacles/train`
+
+## Search And Evaluation Methods
 
 **Beam rollout**
 
-Closed-loop solving does not greedily take one action. At each environment
-step, the policy does a short model-guided beam lookahead:
+A receding-horizon search. At each environment step, it expands candidate
+paths to `beam_depth`, keeps `beam_width` paths, ranks them, executes only the
+first action of the best path, and repeats until solved or `max_steps`.
 
-- keep `beam_width` partial candidate paths;
-- expand each path up to `beam_depth`;
-- consider the model's `top_k` actions per state;
-- execute only the first action of the best beam path;
-- repeat until solved or `max_steps` is reached.
+Main beam setting:
 
-The main evaluation setting was `beam_width=8`, `beam_depth=8`, `top_k=3`,
-`max_steps=100`.
+```text
+beam_width=8
+beam_depth=8
+top_k=3
+max_steps=100
+repeat_penalty=1.0
+beam_score=policy_distance
+distance_weight=0.15
+```
 
 **Beam score**
 
-The previous effective score was hard-coded as policy cost plus a small
-distance-head term. It is now configurable:
+The configurable ranker supports:
 
-- `policy`: rank by cumulative negative log policy probability;
-- `distance`: rank mainly by predicted remaining distance;
-- `policy_distance`: rank by policy cost plus weighted predicted distance.
+- `policy`: cumulative negative log policy probability;
+- `distance`: predicted remaining distance;
+- `policy_distance`: policy cost plus weighted distance estimate.
 
-The main experiments used:
-
-```text
-beam_score = policy_distance
-distance_weight = 0.15
-beam_length_normalization = 0.0
-```
+The main experiments use `policy_distance`.
 
 **Repeat-state penalty**
 
 A search-time cost added when a candidate revisits a state already seen in the
-current rollout. This was already present in the branch; the key experimental
-finding is that enabling it is critical. The main repeat-penalty evaluations
-used `repeat_penalty=1.0`.
+current rollout. It is behavior-changing and was important for the earlier
+beam results.
 
-**Multi4 training set**
+**Best-first search**
 
-The 8000-map Level 0 training set formed by combining:
+A global guided search added after the beam baseline. It keeps a priority
+queue of partial paths instead of replanning a local beam after every action.
+The priority is:
 
-- `data/level0/base/train`;
-- `data/level0/all/train`;
-- `data/level0/shapes/train`;
-- `data/level0/obstacles/train`.
+```text
+policy_cost + distance_weight * predicted_remaining_distance
++ step_penalty * path_length
+```
 
+The final learned headline uses pure best-first with budget `1024`,
+`top_k=3`, `max_depth=100`, and the same `distance_weight=0.15`. A smaller
+budget `512` is the fastest learned throughput setting. Fallback-to-beam was
+tested, but pure best-first dominated it in the final sweep.
 
-**Experiment-time optimization**
+**Inference caches**
 
-The optimization target in these experiments is wall-clock time to a useful
-checkpoint, not raw batches per second. A change can be worthwhile even if each
-batch is slower, provided it reaches a higher solve rate in fewer epochs or less
-total training time. Under this definition, the conv/log run was an optimization:
-it trained more slowly per batch than the linear multi4 model, but reached
-`188/200` Level0 base and `18/68` Level1 after 28.5 minutes of training.
+Evaluation uses in-memory caches keyed by `(puzzle_path, state)`:
 
-## What Changed From The Original Imitation-Learning Branch
+- encoded tensor cache: avoids repeated state-to-plane encoding;
+- prediction cache: avoids repeated model forwards for the same state.
 
-The core method did not change from imitation learning to another learning
-paradigm. It is still supervised behavior cloning on RGD trajectories with a
-policy head and an auxiliary remaining-distance head.
+The cache is behavior-preserving. Cache on/off controls solved the same puzzle
+sets for beam, best-first `512`, and best-first `1024`; only wall-clock time
+changed.
 
-The differences are more specific:
+**Persistent training cache**
 
-| Area | Original branch behavior | Current experiment behavior |
+The training cache stores validated RGD traces and pre-materialized training
+tensors under `data/cache/planner_imitation/...`. On a cache hit, training
+skips RGD calls and repeated train-state encoding. This is for experiment
+startup time, not closed-loop inference.
+
+## Current Compared Systems
+
+| System | Training / solver | Search |
 | --- | --- | --- |
-| Baseline model | Linear per-cell board projection; exact linear remaining-step classes. | Reproduced this explicitly for the base-only and linear multi4 baselines. |
-| Optimized model | No conv/log model-side options in the original branch code. | Added `--encoder-stem conv`, `--distance-target log`, `--distance-bins`, and `--dropout`. Defaults now use conv/log/dropout. |
-| Distance head | Always `max_steps + 1` exact classes. | Supports either exact linear classes or compact log-spaced classes. |
-| Beam ranking | Hard-coded policy-plus-distance behavior. | Added `--beam-score`, `--distance-weight`, and `--beam-length-normalization` for controlled beam ablations. |
-| Evaluation loader | Assumed linear-stem checkpoints. | Detects/loads both linear and conv-stem checkpoints and uses the checkpoint's distance-target mode by default. |
-| Long training workflow | Final rollout eval was tied to training completion. | Added `--skip-final-eval` so long training can save immediately and eval can be run separately. |
-| Demo controls | Exposed basic rollout controls. | Added beam-score, distance-weight, and length-normalization controls. |
-| Benchmarking | No local compute/speed ablation script for these model-side options. | Added `scripts/run_planner_optimization_experiments.py` for controlled CUDA/CPU and model ablations. |
-| Tests | No tests for the new optimization helpers. | Added tests for log distance targets, distance bin decoding, beam scoring, and conv-stem forward shapes. |
+| RGD reference | upstream `N+RGD` C++ planner | direct planner |
+| Base linear | Level0 `base`, linear stem, linear distance | beam |
+| Multi4 linear | Level0 multi4, linear stem, linear distance | beam |
+| Multi4 conv/log | Level0 multi4, conv stem, log distance | beam |
+| Optimized learned | same multi4 conv/log checkpoint | best-first + prediction cache |
 
-## What We Did In The Finished Experiments
+Current headline learned result:
 
-**Base-only reproduction**
+```text
+multi4 conv/log checkpoint + prediction cache + best-first budget 1024
+Level1: 32/68
+Runtime: 138.02s +/- 1.02s over three full runs
+Level0 base sanity: 199/200
+```
 
-Trained on all 2000 `data/level0/base/train` puzzles with the original-style
-linear model:
+The RGD row is a Level1-only planner reference, not a learned-policy result or
+a reproduction of the paper's all-level benchmark curve. It is much faster on
+Level1, but it is also the expert solver used to generate imitation traces.
 
-- `encoder_stem=linear`;
-- `distance_target=linear`;
-- `dropout=0.0`;
-- 60 epochs;
-- RGD expert traces generated locally.
+## Main Code Additions
 
-This reproduced the reported Level 0 baseline:
-
-- `162/200` Level0 base without repeat penalty;
-- `181/200` Level0 base with repeat penalty;
-- `2/68` Level1 with repeat penalty.
-
-**Linear multi4 run**
-
-Trained on all 8000 `base+all+shapes+obstacles` training puzzles while keeping
-the original-style model:
-
-- `encoder_stem=linear`;
-- `distance_target=linear`;
-- `dropout=0.0`;
-- 20 epochs total.
-
-Results:
-
-- `154/200` Level0 base without repeat penalty;
-- `178/200` Level0 base with repeat penalty;
-- `8/68` Level1 with repeat penalty.
-
-This showed that simply adding the multi4 data with the original model config
-was not enough.
-
-**Conv/log multi4 run**
-
-Trained on the same 8000 multi4 puzzles with the Wheeler-inspired model-side
-changes:
-
-- `encoder_stem=conv`;
-- `distance_target=log`;
-- `dropout=0.01`;
-- 6 epochs.
-
-Results:
-
-- `188/200` Level0 base with repeat penalty;
-- `18/68` Level1 with repeat penalty.
-
-This is the main method-side improvement found so far.
+| Area | Added support |
+| --- | --- |
+| Model variants | `--encoder-stem`, conv stem, `--distance-target`, log bins, dropout |
+| Beam controls | `--beam-score`, `--distance-weight`, `--beam-length-normalization` |
+| Eval compatibility | checkpoint-native linear/conv and linear/log distance loading |
+| Runtime profiling | train/eval timing sections and cache hit/miss counters |
+| Eval caching | encoded-state cache and model-output prediction cache |
+| Training cache | persistent trace/tensor cache via `--cache-dir` |
+| Search | `--search-mode beam/best_first/best_first_fallback` |
+| RGD baseline | `scripts/eval_rgd_baseline.py` |
+| Missing-run suite | `scripts/run_missing_time_optimization_experiments.ps1` |
 
 ## Interpretation
 
+The finished optimization story has three separable pieces:
 
-The useful change is a better policy/value model:
-local convolution before transformer attention, compact log-scaled distance
-targets, and small dropout. Beam search still matters, especially the existing
-repeat-state penalty, but the strongest gains came when the model itself became
-better.
+1. Better model quality from multi4 conv/log training.
+2. Faster evaluation from inference caching.
+3. Better closed-loop solve rate from global best-first search.
+
+The final comparison table and detailed timing controls are in
+`reports/planner_imitation_time_optimization_results.md`.

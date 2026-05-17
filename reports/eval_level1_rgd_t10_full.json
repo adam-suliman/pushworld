@@ -1,0 +1,1927 @@
+{
+  "split": "level1_rgd_t10_full",
+  "planner": "external\\pushworld\\cpp\\build\\bin\\run_planner.exe",
+  "planner_mode": "N+RGD",
+  "eval_dirs": [
+    "external\\pushworld\\benchmark\\puzzles\\level1"
+  ],
+  "eval_puzzles": 68,
+  "time_limit_s": 10.0,
+  "repeats": 3,
+  "repeat_results": [
+    {
+      "repeat": 1,
+      "solved": 68,
+      "total": 68,
+      "success_rate": 1.0,
+      "time_s": 6.817939200002002,
+      "solves_per_minute": 598.4212942231579,
+      "timeouts": 0,
+      "invalid_or_failed": 0,
+      "mean_solved_time_s": 0.04347498823522876,
+      "median_solved_time_s": 0.013633649998155306,
+      "mean_plan_length": 39.470588235294116,
+      "max_plan_length": 132,
+      "results": [
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\2 Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.035052499999437714,
+          "plan_length": 53
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\A Perfect Fit.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011851899998873705,
+          "plan_length": 27
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\A Tight Squeeze.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.0129536000022199,
+          "plan_length": 47
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\A Worthy Sacrifice.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.02572899999722722,
+          "plan_length": 68
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\At Crossroads.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.017637100001593353,
+          "plan_length": 33
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Box Walls.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.012231199998495867,
+          "plan_length": 51
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Building Blocks.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.01786799999899813,
+          "plan_length": 33
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Cage Door.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010761400000774302,
+          "plan_length": 26
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Carry The Bucket.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.04592000000047847,
+          "plan_length": 64
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Choose Wisely.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009541300001728814,
+          "plan_length": 21
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Clear The Way.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.01131349999923259,
+          "plan_length": 31
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Corner Sequencing.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.01730379999935394,
+          "plan_length": 47
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Dont Get Distracted.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011604899998928886,
+          "plan_length": 7
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Double Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009947000002284767,
+          "plan_length": 10
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Double Simple Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.0202949999984412,
+          "plan_length": 50
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Double Trouble.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.017041899998730514,
+          "plan_length": 30
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Eyes On The Prize.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.018909700000222074,
+          "plan_length": 17
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Friendly Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.016264699999737786,
+          "plan_length": 40
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Get Out Of My Spot.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010758600001281593,
+          "plan_length": 20
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Goal Is A Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.016472400002385257,
+          "plan_length": 28
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Hockey Stick.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.30654100000174367,
+          "plan_length": 70
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Horizontal Channel.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010981400002492592,
+          "plan_length": 20
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Horizontal Separation.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.015933200000290526,
+          "plan_length": 43
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Ignorable Obstacles.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.01749039999776869,
+          "plan_length": 37
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Insert Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.01805890000105137,
+          "plan_length": 48
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Interlocking Pieces.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.11646040000050562,
+          "plan_length": 57
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Irrelevant Obstacles.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.03820400000040536,
+          "plan_length": 29
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\J Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011869199999637203,
+          "plan_length": 14
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Kangaroo Pouch.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.012255900001036935,
+          "plan_length": 14
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Make A Triangle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.015846899997995934,
+          "plan_length": 36
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Make Room For Me.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.02330919999803882,
+          "plan_length": 91
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Many Small Tools.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.012389100000291364,
+          "plan_length": 22
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Minefield.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011143200001242803,
+          "plan_length": 30
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Mini Minefield.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010906499999691732,
+          "plan_length": 26
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Multiple Goals.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.054722299999411916,
+          "plan_length": 132
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Narrow Path.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011307299999316456,
+          "plan_length": 29
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Obstacle Has Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.00924259999737842,
+          "plan_length": 10
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pick A Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010489200001757126,
+          "plan_length": 24
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Plus Two Goals.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.016122900000482332,
+          "plan_length": 40
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pull Up.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.6442847999969672,
+          "plan_length": 124
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pulling.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.22397089999867603,
+          "plan_length": 58
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pummel Through.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011062800000217976,
+          "plan_length": 6
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Road Block.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010631500001181848,
+          "plan_length": 12
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Sand Castle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.018277499999385327,
+          "plan_length": 64
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Seeing Red.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.018645500000275206,
+          "plan_length": 69
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Shape Of You.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.013631999998324318,
+          "plan_length": 21
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Simple Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.055535500003315974,
+          "plan_length": 23
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Single Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009478500000113854,
+          "plan_length": 10
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Size Limit.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.1273590000018885,
+          "plan_length": 39
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Small Wins.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010923499998170882,
+          "plan_length": 11
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Swap Places.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.021032099997682963,
+          "plan_length": 61
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Swap S Places.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.06083230000149342,
+          "plan_length": 70
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Swiss Army Knife.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.013200900000811089,
+          "plan_length": 27
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Take Diversion.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.012069599997630576,
+          "plan_length": 38
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Take The Long Route.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010048799998912727,
+          "plan_length": 33
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Three Goals.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.013063400001556147,
+          "plan_length": 35
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Tool Train.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.047454700001253514,
+          "plan_length": 80
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Trade Places.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.01986419999957434,
+          "plan_length": 63
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Triple Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.013635299997986294,
+          "plan_length": 28
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Triple Simple Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.05935509999835631,
+          "plan_length": 56
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Tucked Away.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010748799999419134,
+          "plan_length": 18
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Two Goals.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.012240800002473406,
+          "plan_length": 18
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Two Is Company.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.38727250000010827,
+          "plan_length": 132
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Vertical Separation.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.013161599999875762,
+          "plan_length": 31
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Victory Road.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011129099999379832,
+          "plan_length": 15
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Walk Past.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.012105500001780456,
+          "plan_length": 14
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Youre In My Spot.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010251199997583171,
+          "plan_length": 25
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Youre In My Way.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.01230070000019623,
+          "plan_length": 28
+        }
+      ]
+    },
+    {
+      "repeat": 2,
+      "solved": 68,
+      "total": 68,
+      "success_rate": 1.0,
+      "time_s": 6.6730430999996315,
+      "solves_per_minute": 611.4152027581277,
+      "timeouts": 0,
+      "invalid_or_failed": 0,
+      "mean_solved_time_s": 0.04190538529409798,
+      "median_solved_time_s": 0.01327964999836695,
+      "mean_plan_length": 39.470588235294116,
+      "max_plan_length": 132,
+      "results": [
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\2 Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.03792949999842676,
+          "plan_length": 53
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\A Perfect Fit.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009653800003434299,
+          "plan_length": 27
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\A Tight Squeeze.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.00950120000197785,
+          "plan_length": 47
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\A Worthy Sacrifice.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.024940499999502208,
+          "plan_length": 68
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\At Crossroads.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.015432500000315486,
+          "plan_length": 33
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Box Walls.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.012289300000702497,
+          "plan_length": 51
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Building Blocks.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.018502799997804686,
+          "plan_length": 33
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Cage Door.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009729699999297736,
+          "plan_length": 26
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Carry The Bucket.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.043292700000165496,
+          "plan_length": 64
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Choose Wisely.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.008837700002914062,
+          "plan_length": 21
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Clear The Way.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010592500002530869,
+          "plan_length": 31
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Corner Sequencing.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.016202099999645725,
+          "plan_length": 47
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Dont Get Distracted.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011071400000219,
+          "plan_length": 7
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Double Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010159099998418242,
+          "plan_length": 10
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Double Simple Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.020092899998417124,
+          "plan_length": 50
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Double Trouble.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.014031299997441238,
+          "plan_length": 30
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Eyes On The Prize.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.016263100002106512,
+          "plan_length": 17
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Friendly Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011968099999648985,
+          "plan_length": 40
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Get Out Of My Spot.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009848300000157906,
+          "plan_length": 20
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Goal Is A Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.014208199998392956,
+          "plan_length": 28
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Hockey Stick.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.28340860000025714,
+          "plan_length": 70
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Horizontal Channel.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009686599998531165,
+          "plan_length": 20
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Horizontal Separation.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.013751299997238675,
+          "plan_length": 43
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Ignorable Obstacles.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.017934299998159986,
+          "plan_length": 37
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Insert Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.0148990000016056,
+          "plan_length": 48
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Interlocking Pieces.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.1146361999999499,
+          "plan_length": 57
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Irrelevant Obstacles.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.059024199999839766,
+          "plan_length": 29
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\J Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010584499999822583,
+          "plan_length": 14
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Kangaroo Pouch.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011036300002160715,
+          "plan_length": 14
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Make A Triangle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.015661800000088988,
+          "plan_length": 36
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Make Room For Me.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.021341200001188554,
+          "plan_length": 91
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Many Small Tools.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.012242199998581782,
+          "plan_length": 22
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Minefield.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010989700000209268,
+          "plan_length": 30
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Mini Minefield.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010542300002271077,
+          "plan_length": 26
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Multiple Goals.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.053246999999828404,
+          "plan_length": 132
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Narrow Path.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010603800001263153,
+          "plan_length": 29
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Obstacle Has Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.008243799999036128,
+          "plan_length": 10
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pick A Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009254199998395052,
+          "plan_length": 24
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Plus Two Goals.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.014990700001362711,
+          "plan_length": 40
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pull Up.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.6256670000002487,
+          "plan_length": 124
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pulling.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.22658679999949527,
+          "plan_length": 58
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pummel Through.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.00959070000317297,
+          "plan_length": 6
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Road Block.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011126299999887124,
+          "plan_length": 12
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Sand Castle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.01760929999727523,
+          "plan_length": 64
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Seeing Red.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.01867370000036317,
+          "plan_length": 69
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Shape Of You.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.01313069999741856,
+          "plan_length": 21
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Simple Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.04320039999947767,
+          "plan_length": 23
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Single Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.008702200000698213,
+          "plan_length": 10
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Size Limit.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.13106429999970715,
+          "plan_length": 39
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Small Wins.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.00893789999827277,
+          "plan_length": 11
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Swap Places.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.0194402999986778,
+          "plan_length": 61
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Swap S Places.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.059699000001273816,
+          "plan_length": 70
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Swiss Army Knife.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.014714500000991393,
+          "plan_length": 27
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Take Diversion.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.01076209999882849,
+          "plan_length": 38
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Take The Long Route.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009878400000161491,
+          "plan_length": 33
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Three Goals.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.013428599999315338,
+          "plan_length": 35
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Tool Train.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.04503790000308072,
+          "plan_length": 80
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Trade Places.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.018367700002272613,
+          "plan_length": 63
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Triple Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010816399997565895,
+          "plan_length": 28
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Triple Simple Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.05822280000211322,
+          "plan_length": 56
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Tucked Away.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009498400002485141,
+          "plan_length": 18
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Two Goals.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011085300000559073,
+          "plan_length": 18
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Two Is Company.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.37719279999873834,
+          "plan_length": 132
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Vertical Separation.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010767499999928987,
+          "plan_length": 31
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Victory Road.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009419800000614487,
+          "plan_length": 15
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Walk Past.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010312499998690328,
+          "plan_length": 14
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Youre In My Spot.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010076399998069974,
+          "plan_length": 25
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Youre In My Way.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.00993209999796818,
+          "plan_length": 28
+        }
+      ]
+    },
+    {
+      "repeat": 3,
+      "solved": 68,
+      "total": 68,
+      "success_rate": 1.0,
+      "time_s": 6.647461700002168,
+      "solves_per_minute": 613.7681094121489,
+      "timeouts": 0,
+      "invalid_or_failed": 0,
+      "mean_solved_time_s": 0.04145526323544105,
+      "median_solved_time_s": 0.013071649998892099,
+      "mean_plan_length": 39.470588235294116,
+      "max_plan_length": 132,
+      "results": [
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\2 Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.03343650000169873,
+          "plan_length": 53
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\A Perfect Fit.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010508499999559717,
+          "plan_length": 27
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\A Tight Squeeze.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010398499998700572,
+          "plan_length": 47
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\A Worthy Sacrifice.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.023800999999366468,
+          "plan_length": 68
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\At Crossroads.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.015464299998711795,
+          "plan_length": 33
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Box Walls.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011478399999759858,
+          "plan_length": 51
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Building Blocks.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.016120300002512522,
+          "plan_length": 33
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Cage Door.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009739100001752377,
+          "plan_length": 26
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Carry The Bucket.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.04224800000156392,
+          "plan_length": 64
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Choose Wisely.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.007596800001920201,
+          "plan_length": 21
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Clear The Way.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.013269899998704204,
+          "plan_length": 31
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Corner Sequencing.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.0185382000017853,
+          "plan_length": 47
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Dont Get Distracted.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010702700001274934,
+          "plan_length": 7
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Double Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009473999998590443,
+          "plan_length": 10
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Double Simple Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.019744400000490714,
+          "plan_length": 50
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Double Trouble.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.015735100001620594,
+          "plan_length": 30
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Eyes On The Prize.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.01591550000011921,
+          "plan_length": 17
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Friendly Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.012840800001868047,
+          "plan_length": 40
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Get Out Of My Spot.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009749699998792494,
+          "plan_length": 20
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Goal Is A Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.013347000000067055,
+          "plan_length": 28
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Hockey Stick.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.28097170000182814,
+          "plan_length": 70
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Horizontal Channel.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009767199997440912,
+          "plan_length": 20
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Horizontal Separation.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.013790199998766184,
+          "plan_length": 43
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Ignorable Obstacles.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.016426899997895816,
+          "plan_length": 37
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Insert Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.015614899999491172,
+          "plan_length": 48
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Interlocking Pieces.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.11543900000106078,
+          "plan_length": 57
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Irrelevant Obstacles.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.038894499997695675,
+          "plan_length": 29
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\J Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010395400000561494,
+          "plan_length": 14
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Kangaroo Pouch.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010973199998261407,
+          "plan_length": 14
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Make A Triangle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.01577479999832576,
+          "plan_length": 36
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Make Room For Me.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.021841199999471428,
+          "plan_length": 91
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Many Small Tools.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011835199999040924,
+          "plan_length": 22
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Minefield.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010641400000167778,
+          "plan_length": 30
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Mini Minefield.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.00978910000048927,
+          "plan_length": 26
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Multiple Goals.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.05202600000120583,
+          "plan_length": 132
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Narrow Path.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010163800001464551,
+          "plan_length": 29
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Obstacle Has Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.007855699997890042,
+          "plan_length": 10
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pick A Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009868000001006294,
+          "plan_length": 24
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Plus Two Goals.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.014837500002613524,
+          "plan_length": 40
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pull Up.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.6319408999988809,
+          "plan_length": 124
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pulling.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.2242506999973557,
+          "plan_length": 58
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pummel Through.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010279599999194033,
+          "plan_length": 6
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Road Block.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009518900002149167,
+          "plan_length": 12
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Sand Castle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.017488800000137417,
+          "plan_length": 64
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Seeing Red.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.018674399998417357,
+          "plan_length": 69
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Shape Of You.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.013388600000325823,
+          "plan_length": 21
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Simple Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.04286659999706899,
+          "plan_length": 23
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Single Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009027899999637157,
+          "plan_length": 10
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Size Limit.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.1291726000017661,
+          "plan_length": 39
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Small Wins.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.00834930000200984,
+          "plan_length": 11
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Swap Places.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.020158300001639873,
+          "plan_length": 61
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Swap S Places.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.06024570000226959,
+          "plan_length": 70
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Swiss Army Knife.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.012873399999079993,
+          "plan_length": 27
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Take Diversion.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011577699999179458,
+          "plan_length": 38
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Take The Long Route.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.00872929999968619,
+          "plan_length": 33
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Three Goals.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.012669100000493927,
+          "plan_length": 35
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Tool Train.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.04484089999823482,
+          "plan_length": 80
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Trade Places.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.020277299998269882,
+          "plan_length": 63
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Triple Obstacle.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.011230199997953605,
+          "plan_length": 28
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Triple Simple Tool.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.05760960000043269,
+          "plan_length": 56
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Tucked Away.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010039000000688247,
+          "plan_length": 18
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Two Goals.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009706100001494633,
+          "plan_length": 18
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Two Is Company.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.3777083000022685,
+          "plan_length": 132
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Vertical Separation.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010373900000558933,
+          "plan_length": 31
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Victory Road.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009654100002080668,
+          "plan_length": 15
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Walk Past.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.010532600001170067,
+          "plan_length": 14
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Youre In My Spot.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009495000002061715,
+          "plan_length": 25
+        },
+        {
+          "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Youre In My Way.pwp",
+          "solved": true,
+          "valid_plan": true,
+          "timed_out": false,
+          "returncode": 0,
+          "time_s": 0.009264700001949677,
+          "plan_length": 28
+        }
+      ]
+    }
+  ],
+  "aggregate": {
+    "repeats": 3,
+    "solved_mean": 68,
+    "solved_min": 68,
+    "solved_max": 68,
+    "time_s_mean": 6.712814666667934,
+    "time_s_min": 6.647461700002168,
+    "time_s_max": 6.817939200002002,
+    "solves_per_minute_mean": 607.8682021311448,
+    "solves_per_minute_min": 598.4212942231579,
+    "solves_per_minute_max": 613.7681094121489,
+    "timeouts_mean": 0,
+    "timeouts_min": 0,
+    "timeouts_max": 0,
+    "invalid_or_failed_mean": 0,
+    "invalid_or_failed_min": 0,
+    "invalid_or_failed_max": 0,
+    "mean_solved_time_s_mean": 0.04227854558825593,
+    "mean_solved_time_s_min": 0.04145526323544105,
+    "mean_solved_time_s_max": 0.04347498823522876,
+    "median_solved_time_s_mean": 0.013328316665138118,
+    "median_solved_time_s_min": 0.013071649998892099,
+    "median_solved_time_s_max": 0.013633649998155306,
+    "mean_plan_length_mean": 39.470588235294116,
+    "mean_plan_length_min": 39.470588235294116,
+    "mean_plan_length_max": 39.470588235294116,
+    "max_plan_length_mean": 132,
+    "max_plan_length_min": 132,
+    "max_plan_length_max": 132
+  }
+}

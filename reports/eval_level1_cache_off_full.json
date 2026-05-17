@@ -1,0 +1,570 @@
+{
+  "split": "level1_cache_off_full",
+  "solved": 18,
+  "total": 68,
+  "skipped": 0,
+  "success_rate": 0.2647058823529412,
+  "time_s": 1203.2866560000002,
+  "solves_per_minute": 0.8975417408767473,
+  "max_steps": 100,
+  "beam_width": 8,
+  "beam_depth": 8,
+  "top_k": 3,
+  "repeat_penalty": 1.0,
+  "distance_target": "log",
+  "beam_score": "policy_distance",
+  "distance_weight": 0.15,
+  "beam_length_normalization": 0.0,
+  "closed_list_pruning": false,
+  "cache_entries": 0,
+  "prediction_cache_entries": 0,
+  "profile": {
+    "puzzle_parse_time_s": 6.7184725000010985,
+    "eval_loop_time_s": 1203.2866560000002,
+    "encode_time_s": 47.05669219983429,
+    "model_forward_time_s": 1073.5094763001325,
+    "env_step_time_s": 19.55781030005801,
+    "beam_expand_time_s": 31.726226899941594,
+    "beam_rank_time_s": 1.4724695000327301,
+    "encode_cache_hits": 0,
+    "encode_cache_misses": 660116,
+    "prediction_cache_hits": 0,
+    "prediction_cache_misses": 660116,
+    "model_forward_batches": 85722,
+    "model_forward_states": 660116,
+    "predict_batch_calls": 85722,
+    "predict_batch_requested_states": 660116,
+    "predict_batch_unique_forward_states": 660116,
+    "beam_candidate_count": 687932,
+    "beam_closed_list_prunes": 0
+  },
+  "results": [
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\2 Obstacle.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 1,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\A Perfect Fit.pwp",
+      "solved": true,
+      "steps": 32,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\A Tight Squeeze.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 93,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\A Worthy Sacrifice.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 6,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\At Crossroads.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 24,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Box Walls.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 68,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Building Blocks.pwp",
+      "solved": true,
+      "steps": 40,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Cage Door.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 2,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Carry The Bucket.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 16,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Choose Wisely.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 92,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Clear The Way.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 83,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Corner Sequencing.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 39,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Dont Get Distracted.pwp",
+      "solved": true,
+      "steps": 7,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Double Obstacle.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 89,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Double Simple Tool.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 75,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Double Trouble.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 6,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Eyes On The Prize.pwp",
+      "solved": true,
+      "steps": 72,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Friendly Obstacle.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 79,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Get Out Of My Spot.pwp",
+      "solved": true,
+      "steps": 20,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Goal Is A Tool.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 44,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Hockey Stick.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 3,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Horizontal Channel.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 14,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Horizontal Separation.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 81,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Ignorable Obstacles.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 75,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Insert Tool.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 82,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Interlocking Pieces.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 3,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Irrelevant Obstacles.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 10,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\J Tool.pwp",
+      "solved": true,
+      "steps": 22,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Kangaroo Pouch.pwp",
+      "solved": true,
+      "steps": 14,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Make A Triangle.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 1,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Make Room For Me.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 67,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Many Small Tools.pwp",
+      "solved": true,
+      "steps": 28,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Minefield.pwp",
+      "solved": true,
+      "steps": 38,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Mini Minefield.pwp",
+      "solved": true,
+      "steps": 44,
+      "repeated_states": 7,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Multiple Goals.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 1,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Narrow Path.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 44,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Obstacle Has Obstacle.pwp",
+      "solved": true,
+      "steps": 10,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pick A Tool.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 81,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Plus Two Goals.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 1,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pull Up.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 4,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pulling.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 21,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Pummel Through.pwp",
+      "solved": true,
+      "steps": 6,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Road Block.pwp",
+      "solved": true,
+      "steps": 12,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Sand Castle.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 14,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Seeing Red.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 63,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Shape Of You.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 7,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Simple Tool.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 8,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Single Obstacle.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 89,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Size Limit.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Small Wins.pwp",
+      "solved": true,
+      "steps": 11,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Swap Places.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 3,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Swap S Places.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 33,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Swiss Army Knife.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 77,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Take Diversion.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 58,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Take The Long Route.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 59,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Three Goals.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 4,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Tool Train.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 9,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Trade Places.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Triple Obstacle.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 65,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Triple Simple Tool.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 8,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Tucked Away.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 85,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Two Goals.pwp",
+      "solved": true,
+      "steps": 18,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Two Is Company.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Vertical Separation.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 5,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Victory Road.pwp",
+      "solved": true,
+      "steps": 15,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Walk Past.pwp",
+      "solved": true,
+      "steps": 14,
+      "repeated_states": 0,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Youre In My Spot.pwp",
+      "solved": false,
+      "steps": 100,
+      "repeated_states": 77,
+      "skipped": false
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level1\\Youre In My Way.pwp",
+      "solved": true,
+      "steps": 26,
+      "repeated_states": 0,
+      "skipped": false
+    }
+  ],
+  "checkpoint_args": {
+    "train_dir": "[WindowsPath('data/level0/base/train'), WindowsPath('data/level0/all/train'), WindowsPath('data/level0/shapes/train'), WindowsPath('data/level0/obstacles/train')]",
+    "test_dir": "[WindowsPath('data/level0/base/test')]",
+    "level1_dir": "external\\pushworld\\benchmark\\puzzles\\level1",
+    "planner": "external\\pushworld\\cpp\\build\\bin\\run_planner.exe",
+    "train_puzzles": "5",
+    "test_puzzles": "10",
+    "level1_puzzles": "5",
+    "all_train": "True",
+    "all_test": "True",
+    "all_level1": "True",
+    "level0_symmetry_augment": "False",
+    "augment_transforms": "all",
+    "epochs": "6",
+    "batch_size": "64",
+    "lr": "0.001",
+    "distance_loss_weight": "0.2",
+    "distance_target": "log",
+    "distance_bins": "0",
+    "encoder_stem": "conv",
+    "dropout": "0.01",
+    "d_model": "64",
+    "nhead": "4",
+    "layers": "1",
+    "amp": "True",
+    "max_steps": "100",
+    "beam_width": "8",
+    "beam_depth": "8",
+    "top_k": "3",
+    "repeat_penalty": "0.0",
+    "beam_score": "policy_distance",
+    "distance_weight": "0.15",
+    "beam_length_normalization": "0.0",
+    "eval_every": "0",
+    "eval_puzzles": "50",
+    "log_every_batches": "0",
+    "max_cache_entries": "250000",
+    "output": "reports\\planner_imitation_level0_multi4_convlog_e6_train.json",
+    "model_output": "models\\planner_imitation_level0_multi4_convlog_e6.pt",
+    "resume_checkpoint": "None",
+    "epoch_checkpoint_dir": "models\\planner_imitation_level0_multi4_convlog_e6_epochs",
+    "no_epoch_checkpoints": "False",
+    "tensorboard_log": "None",
+    "skip_train_eval": "True",
+    "skip_final_eval": "True",
+    "print_expert_plans": "False",
+    "verbose": "False",
+    "planner_time_limit": "10.0",
+    "planner_workers": "8",
+    "seed": "1"
+  }
+}

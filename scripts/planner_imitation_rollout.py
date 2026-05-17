@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import heapq
+import itertools
 import math
 import time
 from dataclasses import dataclass
@@ -23,6 +25,7 @@ PredictionCache = dict[tuple[str, State], tuple[torch.Tensor, torch.Tensor]]
 ACTION_COUNT = 4
 DISTANCE_TARGETS = ("linear", "log")
 BEAM_SCORE_MODES = ("policy", "policy_distance", "distance")
+SEARCH_MODES = ("beam", "best_first", "best_first_fallback")
 
 
 @dataclass
@@ -45,6 +48,13 @@ class RolloutProfile:
     predict_batch_unique_forward_states: int = 0
     beam_candidate_count: int = 0
     beam_closed_list_prunes: int = 0
+    best_first_expand_time_s: float = 0.0
+    best_first_rank_time_s: float = 0.0
+    best_first_nodes_expanded: int = 0
+    best_first_nodes_generated: int = 0
+    best_first_closed_prunes: int = 0
+    best_first_queue_max: int = 0
+    best_first_batches: int = 0
 
     def to_dict(self) -> dict[str, float | int]:
         return {
@@ -66,7 +76,24 @@ class RolloutProfile:
             "predict_batch_unique_forward_states": self.predict_batch_unique_forward_states,
             "beam_candidate_count": self.beam_candidate_count,
             "beam_closed_list_prunes": self.beam_closed_list_prunes,
+            "best_first_expand_time_s": self.best_first_expand_time_s,
+            "best_first_rank_time_s": self.best_first_rank_time_s,
+            "best_first_nodes_expanded": self.best_first_nodes_expanded,
+            "best_first_nodes_generated": self.best_first_nodes_generated,
+            "best_first_closed_prunes": self.best_first_closed_prunes,
+            "best_first_queue_max": self.best_first_queue_max,
+            "best_first_batches": self.best_first_batches,
         }
+
+
+@dataclass(frozen=True)
+class BestFirstSearchResult:
+    solved: bool
+    path: tuple[int, ...]
+    expanded: int
+    generated: int
+    closed: int
+    frontier: int
 
 
 def set_cells(
@@ -293,6 +320,158 @@ def beam_rank_score(
     if beam_score == "distance":
         return expected_distance + distance_weight * normalized_policy_cost
     return normalized_policy_cost + distance_weight * expected_distance
+
+
+def best_first_priority(
+    policy_cost: float,
+    expected_distance: float,
+    path_len: int,
+    distance_weight: float,
+    step_penalty: float,
+) -> float:
+    return policy_cost + distance_weight * expected_distance + step_penalty * path_len
+
+
+def best_first_search(
+    model: nn.Module,
+    puzzle: PushWorldPuzzle,
+    state: State,
+    height: int,
+    width: int,
+    device: torch.device,
+    puzzle_key: str,
+    encode_cache: EncodeCache,
+    max_cache_entries: int,
+    node_budget: int,
+    batch_size: int,
+    top_k: int,
+    max_depth: int,
+    distance_target: str = "linear",
+    distance_max_steps: int | None = None,
+    distance_weight: float = 0.15,
+    step_penalty: float = 0.0,
+    prediction_cache: PredictionCache | None = None,
+    profile: RolloutProfile | None = None,
+) -> BestFirstSearchResult:
+    if node_budget <= 0 or batch_size <= 0 or top_k <= 0 or max_depth <= 0:
+        return BestFirstSearchResult(False, (), 0, 0, 0, 0)
+    if puzzle.is_goal_state(state):
+        return BestFirstSearchResult(True, (), 0, 0, 0, 0)
+
+    counter = itertools.count()
+    frontier: list[tuple[float, int, int, State, tuple[int, ...], float]] = [
+        (0.0, 0, next(counter), state, (), 0.0)
+    ]
+    closed: set[State] = set()
+    expanded = 0
+    generated = 0
+
+    while frontier and expanded < node_budget:
+        nodes: list[tuple[State, tuple[int, ...], float]] = []
+        while frontier and len(nodes) < batch_size and expanded + len(nodes) < node_budget:
+            _, _, _, node_state, path, policy_cost = heapq.heappop(frontier)
+            if node_state in closed:
+                if profile is not None:
+                    profile.best_first_closed_prunes += 1
+                continue
+            closed.add(node_state)
+            nodes.append((node_state, path, policy_cost))
+        if not nodes:
+            continue
+
+        if profile is not None:
+            profile.best_first_batches += 1
+            profile.best_first_nodes_expanded += len(nodes)
+
+        action_log_probs, _ = predict_batch(
+            model,
+            [(puzzle, puzzle_key, node_state) for node_state, _, _ in nodes],
+            height,
+            width,
+            device,
+            encode_cache,
+            max_cache_entries,
+            distance_target,
+            distance_max_steps,
+            prediction_cache,
+            profile,
+        )
+
+        candidates_by_state: dict[State, tuple[State, tuple[int, ...], float]] = {}
+        expand_start = time.perf_counter()
+        for node_idx, (node_state, path, policy_cost) in enumerate(nodes):
+            expanded += 1
+            if puzzle.is_goal_state(node_state):
+                return BestFirstSearchResult(True, path, expanded, generated, len(closed), len(frontier))
+            if len(path) >= max_depth:
+                continue
+            action_count = min(top_k, ACTION_COUNT)
+            top_actions = torch.topk(action_log_probs[node_idx], k=action_count).indices.tolist()
+            for action in top_actions:
+                step_start = time.perf_counter()
+                next_state = puzzle.get_next_state(node_state, int(action))
+                if profile is not None:
+                    profile.env_step_time_s += time.perf_counter() - step_start
+                if next_state == node_state:
+                    continue
+                if next_state in closed:
+                    if profile is not None:
+                        profile.best_first_closed_prunes += 1
+                    continue
+                next_path = path + (int(action),)
+                next_policy_cost = policy_cost - float(action_log_probs[node_idx, action])
+                generated += 1
+                if profile is not None:
+                    profile.best_first_nodes_generated += 1
+                if puzzle.is_goal_state(next_state):
+                    if profile is not None:
+                        profile.best_first_expand_time_s += time.perf_counter() - expand_start
+                    return BestFirstSearchResult(
+                        True,
+                        next_path,
+                        expanded,
+                        generated,
+                        len(closed),
+                        len(frontier),
+                    )
+                previous = candidates_by_state.get(next_state)
+                if previous is None or next_policy_cost < previous[2]:
+                    candidates_by_state[next_state] = (next_state, next_path, next_policy_cost)
+        if profile is not None:
+            profile.best_first_expand_time_s += time.perf_counter() - expand_start
+
+        candidates = list(candidates_by_state.values())
+        if not candidates:
+            continue
+        rank_start = time.perf_counter()
+        _, leaf_distances = predict_batch(
+            model,
+            [(puzzle, puzzle_key, candidate[0]) for candidate in candidates],
+            height,
+            width,
+            device,
+            encode_cache,
+            max_cache_entries,
+            distance_target,
+            distance_max_steps,
+            prediction_cache,
+            profile,
+        )
+        for candidate, expected_distance in zip(candidates, leaf_distances.tolist(), strict=True):
+            _, path, policy_cost = candidate
+            priority = best_first_priority(
+                policy_cost=policy_cost,
+                expected_distance=float(expected_distance),
+                path_len=len(path),
+                distance_weight=distance_weight,
+                step_penalty=step_penalty,
+            )
+            heapq.heappush(frontier, (priority, len(path), next(counter), candidate[0], path, policy_cost))
+        if profile is not None:
+            profile.best_first_rank_time_s += time.perf_counter() - rank_start
+            profile.best_first_queue_max = max(profile.best_first_queue_max, len(frontier))
+
+    return BestFirstSearchResult(False, (), expanded, generated, len(closed), len(frontier))
 
 
 def choose_action(
