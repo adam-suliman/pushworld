@@ -47,6 +47,29 @@ PushWorld paper's all-level benchmark curve over 223 puzzles from Levels 1-4.
 In a quick local `1s` per-puzzle all-level probe, the same `N+RGD` executable
 solved `108/223` and timed out on `115`.
 
+## Runtime Device Roles
+
+The recent learned timing runs used this local stack:
+
+```text
+python=C:\Users\adams\AppData\Local\Programs\Python\Python313\python.exe
+torch=2.10.0.dev20251006+cu130
+cuda_available=True
+cuda_device=NVIDIA GeForce RTX 2060
+```
+
+For learned beam and best-first evaluation, `--device auto` resolved to
+`device=cuda` in the saved logs. The transformer model forward passes ran on
+the GPU. Puzzle parsing, PushWorld environment stepping, search frontier
+management, closed-list checks, and cache dictionaries ran on CPU.
+
+For training, the neural forward/backward/update loop runs on CUDA when
+available; the main conv/log run also used AMP. RGD trace generation, puzzle
+parsing, dataset materialization, and dataloader work remain CPU-side.
+
+For `N+RGD`, the C++ planner ran as an external CPU process. It did not use the
+neural checkpoint or GPU.
+
 ## Supervised Imitation Setup
 
 **Imitation trajectory**
@@ -149,19 +172,70 @@ beam results.
 
 **Best-first search**
 
-A global guided search added after the beam baseline. It keeps a priority
-queue of partial paths instead of replanning a local beam after every action.
-The priority is:
+A learned policy/value-guided planner added after the beam baseline. It uses
+the trained checkpoint as a heuristic, but the search itself is explicit
+planning over PushWorld states.
+
+Unlike the beam rollout, best-first is not receding-horizon control. Beam
+rollout repeatedly plans a shallow local tree, executes one action, then plans
+again from the new real state. Best-first instead starts from the puzzle's
+initial state and keeps one global frontier of partial paths until it either
+finds a goal or exhausts its search limits.
+
+The frontier is a priority queue. Each queue item stores:
+
+- the current PushWorld state;
+- the action path from the initial state to that state;
+- the cumulative policy cost of that path;
+- a priority score used to decide which partial path to expand next.
+
+Lower priority is better. The priority score is:
 
 ```text
 policy_cost + distance_weight * predicted_remaining_distance
 + step_penalty * path_length
 ```
 
-The final learned headline uses pure best-first with budget `1024`,
-`top_k=3`, `max_depth=100`, and the same `distance_weight=0.15`. A smaller
-budget `512` is the fastest learned throughput setting. Fallback-to-beam was
-tested, but pure best-first dominated it in the final sweep.
+where:
+
+- `policy_cost` is the sum of negative log-probabilities of the chosen actions
+  along the path;
+- `predicted_remaining_distance` comes from the checkpoint's auxiliary
+  distance/value head for the candidate state;
+- `distance_weight` controls how much the distance head influences search;
+- `step_penalty` is optional and was `0.0` in the main runs.
+
+One iteration of the implementation does this:
+
+1. Pop up to `best_first_batch_size` lowest-priority states from the frontier.
+2. Skip states already in the per-puzzle closed set.
+3. Run one batched model call on those states to get action log-probabilities.
+4. For each expanded state, try only the model's top `best_first_top_k`
+   actions.
+5. Step the PushWorld environment for each selected action.
+6. Drop no-op transitions and states already in the closed set.
+7. Deduplicate candidates that reach the same next state, keeping the cheaper
+   policy path.
+8. Run a second batched model call on the unique candidate states to estimate
+   remaining distance.
+9. Push candidates back into the priority queue with the score above.
+
+The search stops when it generates or pops a goal state, reaches
+`best_first_max_depth`, exhausts the priority queue, or expands
+`best_first_budget` states. The budget is therefore an expanded-node cap, not
+a wall-clock cap.
+
+This is not an optimal planner in the A* sense: the learned distance head is
+not guaranteed to be admissible, and the search only branches over the top
+model actions. It is better described as a learned heuristic planner or
+policy-guided best-first search.
+
+The main repeated learned headline uses pure best-first with budget `1024`,
+`top_k=3`, `max_depth=100`, and `distance_weight=0.15`. Budget `512` is the
+fastest learned throughput setting. A later single-run ceiling sweep reached a
+higher solve count at budget `16384`, but at much worse solves/minute.
+Fallback-to-beam was tested, but pure best-first dominated it in the final
+sweep.
 
 **Inference caches**
 
@@ -169,6 +243,17 @@ Evaluation uses in-memory caches keyed by `(puzzle_path, state)`:
 
 - encoded tensor cache: avoids repeated state-to-plane encoding;
 - prediction cache: avoids repeated model forwards for the same state.
+
+The two caches have very different memory costs. A prediction-cache entry is
+small, but an encoded-state entry stores a full padded board tensor. For the
+current checkpoint board size, one encoded state is about `58.6 KiB`, so a
+million-entry encoded cache can require tens of GB of CPU RAM. New large-budget
+runs should keep the prediction cache large while disabling or sharply capping
+the encoded-state cache, for example:
+
+```powershell
+--max-cache-entries 1000000 --max-encode-cache-entries 0
+```
 
 The cache is behavior-preserving. Cache on/off controls solved the same puzzle
 sets for beam, best-first `512`, and best-first `1024`; only wall-clock time

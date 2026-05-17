@@ -3,9 +3,11 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import platform
 import random
 import re
 import subprocess
+import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
@@ -69,6 +71,31 @@ def set_seed(seed: int) -> None:
     torch.manual_seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
+
+
+def runtime_metadata(device: torch.device, amp: bool) -> dict[str, object]:
+    cuda_available = torch.cuda.is_available()
+    cuda_device = None
+    if cuda_available:
+        cuda_index = device.index if device.type == "cuda" and device.index is not None else 0
+        cuda_device = torch.cuda.get_device_name(cuda_index)
+    return {
+        "training_device": str(device),
+        "amp_enabled": bool(amp and device.type == "cuda"),
+        "cuda_available": cuda_available,
+        "cuda_device": cuda_device,
+        "torch_version": torch.__version__,
+        "python_executable": sys.executable,
+        "python_version": sys.version.split()[0],
+        "platform": platform.platform(),
+        "cpu_components": [
+            "RGD planner subprocesses",
+            "puzzle parsing",
+            "dataset materialization",
+            "dataloader",
+            "closed-loop evaluation search",
+        ],
+    }
 
 
 def default_planner_path() -> Path:
@@ -1581,6 +1608,7 @@ def main() -> None:
         "train_eval": compact_eval(train_eval),
         "level0_test_eval": compact_eval(test_eval),
         "level1_eval": compact_eval(level1_eval),
+        "runtime": runtime_metadata(device, args.amp),
     }
     if writer is not None:
         train_solved = train_eval["solved"] or 0

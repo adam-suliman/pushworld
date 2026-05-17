@@ -226,7 +226,11 @@ def predict_batch(
     distance_max_steps: int | None = None,
     prediction_cache: PredictionCache | None = None,
     profile: RolloutProfile | None = None,
+    max_encode_cache_entries: int | None = None,
+    max_prediction_cache_entries: int | None = None,
 ) -> tuple[torch.Tensor, torch.Tensor]:
+    encode_cache_limit = max_cache_entries if max_encode_cache_entries is None else max_encode_cache_entries
+    prediction_cache_limit = max_cache_entries if max_prediction_cache_entries is None else max_prediction_cache_entries
     if profile is not None:
         profile.predict_batch_calls += 1
         profile.predict_batch_requested_states += len(puzzle_states)
@@ -257,7 +261,7 @@ def predict_batch(
                 height,
                 width,
                 encode_cache,
-                max_cache_entries,
+                encode_cache_limit,
                 profile,
             )
             for puzzle, puzzle_key, state in uncached
@@ -285,8 +289,8 @@ def predict_batch(
             cached_results[key] = result
             if (
                 prediction_cache is not None
-                and max_cache_entries > 0
-                and len(prediction_cache) < max_cache_entries
+                and prediction_cache_limit > 0
+                and len(prediction_cache) < prediction_cache_limit
             ):
                 prediction_cache[key] = result
 
@@ -352,6 +356,8 @@ def best_first_search(
     step_penalty: float = 0.0,
     prediction_cache: PredictionCache | None = None,
     profile: RolloutProfile | None = None,
+    max_encode_cache_entries: int | None = None,
+    max_prediction_cache_entries: int | None = None,
 ) -> BestFirstSearchResult:
     if node_budget <= 0 or batch_size <= 0 or top_k <= 0 or max_depth <= 0:
         return BestFirstSearchResult(False, (), 0, 0, 0, 0)
@@ -395,6 +401,8 @@ def best_first_search(
             distance_max_steps,
             prediction_cache,
             profile,
+            max_encode_cache_entries,
+            max_prediction_cache_entries,
         )
 
         candidates_by_state: dict[State, tuple[State, tuple[int, ...], float]] = {}
@@ -456,6 +464,8 @@ def best_first_search(
             distance_max_steps,
             prediction_cache,
             profile,
+            max_encode_cache_entries,
+            max_prediction_cache_entries,
         )
         for candidate, expected_distance in zip(candidates, leaf_distances.tolist(), strict=True):
             _, path, policy_cost = candidate
@@ -497,6 +507,8 @@ def choose_action(
     prediction_cache: PredictionCache | None = None,
     profile: RolloutProfile | None = None,
     closed_list_pruning: bool = False,
+    max_encode_cache_entries: int | None = None,
+    max_prediction_cache_entries: int | None = None,
 ) -> int:
     seen = set(seen_states) if seen_states is not None and repeat_penalty > 0.0 else set()
     closed = set(seen_states) if seen_states is not None and closed_list_pruning else set()
@@ -514,6 +526,8 @@ def choose_action(
             distance_max_steps,
             prediction_cache,
             profile,
+            max_encode_cache_entries,
+            max_prediction_cache_entries,
         )
         fallback_action: int | None = None
         for action in torch.argsort(action_log_probs[0], descending=True).tolist():
@@ -547,6 +561,8 @@ def choose_action(
             distance_max_steps,
             prediction_cache,
             profile,
+            max_encode_cache_entries,
+            max_prediction_cache_entries,
         )
         action_log_probs, _ = predictions
         candidates_by_state: dict[State, tuple[State, tuple[int, ...], float]] = {}
@@ -599,6 +615,8 @@ def choose_action(
             distance_max_steps,
             prediction_cache,
             profile,
+            max_encode_cache_entries,
+            max_prediction_cache_entries,
         )
         del leaf_log_probs
         rank_start = time.perf_counter()

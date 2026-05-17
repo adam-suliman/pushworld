@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import platform
+import sys
 import time
 from pathlib import Path
 
@@ -72,6 +74,7 @@ def evaluate_split(
     beam_depth: int,
     top_k: int,
     max_cache_entries: int,
+    max_encode_cache_entries: int,
     split_name: str,
     repeat_penalty: float = 0.0,
     distance_target: str = "linear",
@@ -135,6 +138,8 @@ def evaluate_split(
                     puzzle_key=str(path),
                     encode_cache=encode_cache,
                     max_cache_entries=max_cache_entries,
+                    max_encode_cache_entries=max_encode_cache_entries,
+                    max_prediction_cache_entries=max_cache_entries,
                     node_budget=best_first_budget,
                     batch_size=best_first_batch_size,
                     top_k=best_first_top_k or top_k,
@@ -181,6 +186,8 @@ def evaluate_split(
                         puzzle_key=str(path),
                         encode_cache=encode_cache,
                         max_cache_entries=max_cache_entries,
+                        max_encode_cache_entries=max_encode_cache_entries,
+                        max_prediction_cache_entries=max_cache_entries,
                         seen_states=seen,
                         repeat_penalty=repeat_penalty,
                         distance_target=distance_target,
@@ -236,6 +243,8 @@ def evaluate_split(
         "distance_weight": distance_weight,
         "beam_length_normalization": beam_length_normalization,
         "closed_list_pruning": closed_list_pruning,
+        "max_cache_entries": max_cache_entries,
+        "max_encode_cache_entries": max_encode_cache_entries,
         "search_mode": search_mode,
         "best_first_budget": best_first_budget,
         "best_first_batch_size": best_first_batch_size,
@@ -258,6 +267,29 @@ def make_writer(log_dir: Path | None):
 
     log_dir.mkdir(parents=True, exist_ok=True)
     return SummaryWriter(log_dir=str(log_dir))
+
+
+def runtime_metadata(device: torch.device) -> dict[str, object]:
+    cuda_available = torch.cuda.is_available()
+    cuda_device = None
+    if cuda_available:
+        cuda_index = device.index if device.type == "cuda" and device.index is not None else 0
+        cuda_device = torch.cuda.get_device_name(cuda_index)
+    return {
+        "neural_model_device": str(device),
+        "cuda_available": cuda_available,
+        "cuda_device": cuda_device,
+        "torch_version": torch.__version__,
+        "python_executable": sys.executable,
+        "python_version": sys.version.split()[0],
+        "platform": platform.platform(),
+        "cpu_components": [
+            "puzzle parsing",
+            "environment stepping",
+            "search frontier management",
+            "state and prediction cache dictionaries",
+        ],
+    }
 
 
 def main() -> None:
@@ -293,6 +325,16 @@ def main() -> None:
     parser.add_argument("--best-first-max-depth", type=int, default=0)
     parser.add_argument("--best-first-step-penalty", type=float, default=0.0)
     parser.add_argument("--max-cache-entries", type=int, default=250_000)
+    parser.add_argument(
+        "--max-encode-cache-entries",
+        type=int,
+        default=None,
+        help=(
+            "Maximum encoded board tensors to keep in RAM. Defaults to --max-cache-entries "
+            "for backward compatibility. Use 0 for large prediction-cache runs to avoid "
+            "holding many full encoded states."
+        ),
+    )
     parser.add_argument("--device", choices=["auto", "cuda", "cpu"], default="auto")
     parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--tensorboard-log", type=Path, default=None)
@@ -315,6 +357,13 @@ def main() -> None:
         raise ValueError("--best-first-max-depth must be >= 0")
     if args.best_first_step_penalty < 0.0:
         raise ValueError("--best-first-step-penalty must be >= 0")
+    if args.max_cache_entries < 0:
+        raise ValueError("--max-cache-entries must be >= 0")
+    if args.max_encode_cache_entries is not None and args.max_encode_cache_entries < 0:
+        raise ValueError("--max-encode-cache-entries must be >= 0")
+    max_encode_cache_entries = (
+        args.max_cache_entries if args.max_encode_cache_entries is None else args.max_encode_cache_entries
+    )
 
     if args.device == "auto":
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -336,7 +385,9 @@ def main() -> None:
         f"repeat_penalty={args.repeat_penalty} distance_target={distance_target} "
         f"beam_score={args.beam_score} distance_weight={args.distance_weight} "
         f"beam_length_normalization={args.beam_length_normalization} "
-        f"search_mode={args.search_mode} best_first_budget={args.best_first_budget}"
+        f"search_mode={args.search_mode} best_first_budget={args.best_first_budget} "
+        f"max_cache_entries={args.max_cache_entries} "
+        f"max_encode_cache_entries={max_encode_cache_entries}"
     )
 
     result = evaluate_split(
@@ -350,6 +401,7 @@ def main() -> None:
         args.beam_depth,
         args.top_k,
         args.max_cache_entries,
+        max_encode_cache_entries,
         args.split_name,
         args.repeat_penalty,
         distance_target,
@@ -380,6 +432,7 @@ def main() -> None:
             for item in result["results"]
         ]
     summary["checkpoint_args"] = {key: str(value) for key, value in checkpoint_args.items()}
+    summary["runtime"] = runtime_metadata(device)
 
     print("summary=" + json.dumps(summary, indent=2))
 

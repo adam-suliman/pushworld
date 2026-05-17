@@ -31,6 +31,33 @@ beam_length_normalization=0.0
 Before the optimization pass, the same Level1 eval was observed to take about
 `20m26s` while solving `18/68`.
 
+## Runtime Hardware And Device Use
+
+GPU availability was verified on 2026-05-18 with the Python stack used for the
+recent experiments:
+
+```text
+python=C:\Users\adams\AppData\Local\Programs\Python\Python313\python.exe
+torch=2.10.0.dev20251006+cu130
+cuda_available=True
+cuda_device=NVIDIA GeForce RTX 2060
+platform=Windows-11-10.0.26200-SP0
+```
+
+The recent learned-eval logs under `reports/logs/time_optimization_missing/`
+and `reports/logs/time_optimization_level2/` print `device=cuda`, so the
+transformer model forward passes for those learned beam and best-first runs ran
+on the RTX 2060. The surrounding solver work remains CPU-side: puzzle parsing,
+PushWorld environment stepping, beam/frontier management, closed-list checks,
+and Python cache dictionaries.
+
+The `N+RGD` reference row is different: it runs the upstream C++
+`run_planner.exe` as an external CPU planner process and does not use the
+neural model or GPU. Existing eval JSONs before this note did not persist
+device metadata directly; `scripts/train_planner_imitation_v2.py`,
+`scripts/eval_planner_imitation.py`, and `scripts/eval_rgd_baseline.py` now add
+a `runtime` block to future outputs.
+
 ## Implemented Optimizations
 
 ### Persistent Planner-Imitation Cache
@@ -331,6 +358,10 @@ Run files:
 - `reports/eval_level1_search_bf_256.json`
 - `reports/eval_level1_search_bf_512.json`
 - `reports/eval_level1_search_bf_1024.json`
+- `reports/eval_level1_bf_2048_s100.json`
+- `reports/eval_level1_bf_4096_s100.json`
+- `reports/eval_level1_bf_8192_s100.json`
+- `reports/eval_level1_bf_16384_s100_cache1m.json`
 - `reports/eval_level1_search_bf_fb_128.json`
 - `reports/eval_level1_search_bf_fb_256.json`
 - `reports/eval_level1_search_bf_fb_512.json`
@@ -354,6 +385,10 @@ first, then used the beam baseline if best-first failed.
 | `level1_bf_256` | best-first | 11/68 | 48.34s | 13.65 | 11 | 0 |
 | `level1_bf_512` | best-first | 20/68 | 84.56s | 14.19 | 20 | 0 |
 | `level1_bf_1024` | best-first | 32/68 | 139.43s | 13.77 | 32 | 0 |
+| `level1_bf_2048_s100` | best-first | 36/68 | 199.11s | 10.85 | 36 | 0 |
+| `level1_bf_4096_s100` | best-first | 39/68 | 388.99s | 6.02 | 39 | 0 |
+| `level1_bf_8192_s100` | best-first | 42/68 | 867.57s | 2.91 | 42 | 0 |
+| `level1_bf_16384_s100_cache1m` | best-first | 45/68 | 1136.53s | 2.38 | 45 | 0 |
 | `level1_bf_fb_128` | best-first fallback | 20/68 | 100.75s | 11.91 | 5 | 63 |
 | `level1_bf_fb_256` | best-first fallback | 22/68 | 112.24s | 11.76 | 11 | 57 |
 | `level1_bf_fb_512` | best-first fallback | 25/68 | 145.82s | 10.29 | 20 | 48 |
@@ -366,6 +401,10 @@ first, then used the beam baseline if best-first failed.
 | `level1_bf_256` | 41,889 | 25,258 | 39.70% | 37.99s | 1.12s | 16,288 | 29,669 | 0 |
 | `level1_bf_512` | 77,822 | 45,751 | 41.21% | 70.04s | 1.99s | 29,573 | 53,694 | 0 |
 | `level1_bf_1024` | 135,253 | 77,246 | 42.89% | 117.96s | 3.52s | 50,305 | 91,154 | 0 |
+| `level1_bf_2048_s100` | 232,681 | 130,147 | 44.06% | 169.30s | 5.36s | 84,680 | 154,888 | 0 |
+| `level1_bf_4096_s100` | 409,173 | 225,074 | 44.99% | 329.67s | 11.71s | 147,032 | 269,945 | 0 |
+| `level1_bf_8192_s100` | 710,402 | 489,986 | 31.03% | 742.06s | 20.37s | 251,945 | 467,184 | 0 |
+| `level1_bf_16384_s100_cache1m` | 1,243,540 | 667,718 | 46.31% | 957.41s | 34.76s | 438,472 | 815,157 | 0 |
 | `level1_bf_fb_128` | 663,472 | 35,603 | 94.63% | 58.63s | 16.76s | 8,502 | 15,568 | 669,149 |
 | `level1_bf_fb_256` | 656,279 | 44,642 | 93.20% | 72.31s | 15.48s | 16,288 | 29,669 | 638,833 |
 | `level1_bf_fb_512` | 648,244 | 61,873 | 90.46% | 98.98s | 17.06s | 29,573 | 53,694 | 594,578 |
@@ -377,10 +416,38 @@ The best throughput setting in this sweep is `level1_bf_512`: it solves
 baseline (`84.56s` vs `92.28s`). Its throughput is `14.19` solves/minute versus
 `11.70` for beam.
 
-The best solve-rate setting is `level1_bf_1024`: it solves `32/68` in
+The best repeated solve-rate setting is `level1_bf_1024`: it solves `32/68` in
 `139.43s`. That is `+14` solves over beam while still keeping throughput close
-to the cached beam run. This is the strongest current Level1 result from the
-same checkpoint.
+to the cached beam run. The later single-run ceiling sweep pushed solve rate
+higher, but at much worse solves/minute.
+
+### Higher-Budget Ceiling Sweep
+
+The later `2048/4096/8192/16384` budget runs show that the same checkpoint can
+solve more Level1 puzzles when given substantially more search budget. The
+solved sets are nested: each larger budget kept every puzzle solved by the
+smaller budget and added a few more.
+
+| Budget step | Added solves | Added time | Marginal solves/min |
+| --- | ---: | ---: | ---: |
+| `256 -> 512` | +9 | +36.22s | 14.91 |
+| `512 -> 1024` | +12 | +54.87s | 13.12 |
+| `1024 -> 2048` | +4 | +59.68s | 4.02 |
+| `2048 -> 4096` | +3 | +189.87s | 0.95 |
+| `4096 -> 8192` | +3 | +478.58s | 0.38 |
+| `8192 -> 16384` | +3 | +268.96s | 0.67 |
+
+The headline ceiling is now `45/68` at budget `16384`, but the runtime is
+`1136.53s` and throughput falls to `2.38` solves/minute. This is useful as an
+upper-bound diagnostic, not as the default experiment-time setting.
+
+The `8192` run also hit the configured `--max-cache-entries 250000` cap:
+`prediction_cache_entries=250000` while `prediction_cache_misses=489986`.
+That explains the drop in prediction-cache hit rate from about `45%` at budget
+`4096` to `31%` at budget `8192`. The `16384` run used a larger `1,000,000`
+entry cap and did not saturate it: `667,718` entries were retained and the hit
+rate recovered to `46.31%`. Even with the larger cache, the marginal solve-rate
+curve still shows strong diminishing returns beyond budget `1024`.
 
 The fallback variants are not competitive in this matrix. They add the cost of
 best-first and then still fall back to beam on most puzzles, so they solve more
@@ -454,7 +521,9 @@ Eyes On The Prize.pwp
 Use pure best-first, not fallback, for the next main experiment:
 
 - `best_first` with budget `512` for fastest quality-per-minute checks;
-- `best_first` with budget `1024` for the best current Level1 solve rate;
+- `best_first` with budget `1024` for the best repeated Level1 headline;
+- `best_first` with budget `16384` only as an expensive solve-rate ceiling
+  diagnostic;
 - keep beam as the reproducibility baseline, not as the default optimized
   search path.
 
@@ -468,6 +537,10 @@ This section aggregates the missing full-run controls from:
 - `reports/eval_level1_multi4_repro_p1_s100_profiled.json`
 - `reports/eval_level1_search_bf_512_cache_off.json`
 - `reports/eval_level1_search_bf_1024_cache_off.json`
+- `reports/eval_level1_bf_2048_s100.json`
+- `reports/eval_level1_bf_4096_s100.json`
+- `reports/eval_level1_bf_8192_s100.json`
+- `reports/eval_level1_bf_16384_s100_cache1m.json`
 - `reports/eval_level0_base_convlog_beam_cache_on.json`
 - `reports/eval_level0_base_convlog_bf_512_cache_on.json`
 - `reports/eval_level0_base_convlog_bf_1024_cache_on.json`
@@ -490,8 +563,9 @@ All learned closed-loop runs below use the full 68-puzzle Level1 benchmark,
 `max_steps=100`, `beam_width=8`, `beam_depth=8`, `top_k=3`,
 `repeat_penalty=1.0`, `beam_score=policy_distance`, and
 `distance_weight=0.15` unless the row explicitly uses best-first search. The
-reported learned repeat rows are means over three full reruns. RGD uses the
-upstream C++ `N+RGD` planner with a `10s` per-puzzle timeout.
+reported learned repeat rows are means over three full reruns. Learned rows use
+CPU search plus CUDA model scoring. RGD uses the upstream C++ `N+RGD` planner
+with a `10s` per-puzzle timeout and runs as a CPU planner process.
 
 Important caveat: the RGD row here is Level1-only. It should not be compared
 directly to the PushWorld paper's all-level benchmark curve, which covers all
@@ -499,15 +573,16 @@ directly to the PushWorld paper's all-level benchmark curve, which covers all
 four local benchmark levels solved only `108/223` and timed out on `115`, while
 Level1 alone solved `68/68`.
 
-| System | Model / solver | Search and cache | Checkpoint cost | Level0 base | Level1 solved | Level1 time | Solves/min | Run basis | Role |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| Upstream planner | `N+RGD` C++ planner | direct planner, no learned model | n/a | n/a | 68/68 | 6.71s +/- 0.08s | 607.87 | 3 repeats | Level1-only planner reference |
-| Learned baseline | base-only linear/linear | beam, cache on | 40.4m | 181/200 | 2/68 | 40.67s | 2.95 | single profiled | old learned baseline |
-| Learned baseline | multi4 linear/linear | beam, cache on | ~69m est.; 49.0m recorded resume | 178/200 | 8/68 | 50.97s | 9.42 | single profiled | stronger old baseline |
-| Best checkpoint, raw eval | multi4 conv/log | beam, cache off | 29.5m | 188/200 | 18/68 | 1203.29s | 0.90 | single control | no-cache baseline |
-| Best checkpoint | multi4 conv/log | beam, cache on | 29.5m | 188/200 | 18/68 | 93.28s +/- 2.52s | 11.59 | 3 repeats | cached beam baseline |
-| Optimized throughput | multi4 conv/log | best-first `512`, cache on | 29.5m | 195/200 | 20/68 | 83.71s +/- 0.60s | 14.34 | 3 repeats | fastest learned setting |
-| Best learned result | multi4 conv/log | best-first `1024`, cache on | 29.5m | 199/200 | 32/68 | 138.02s +/- 1.02s | 13.91 | 3 repeats | best learned solve rate |
+| System | Model / solver | Search and cache | Compute | Checkpoint cost | Level0 base | Level1 solved | Level1 time | Solves/min | Run basis | Role |
+| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| Upstream planner | `N+RGD` C++ planner | direct planner, no learned model | CPU planner | n/a | n/a | 68/68 | 6.71s +/- 0.08s | 607.87 | 3 repeats | Level1-only planner reference |
+| Learned baseline | base-only linear/linear | beam, cache on | CPU search + CUDA model | 40.4m | 181/200 | 2/68 | 40.67s | 2.95 | single profiled | old learned baseline |
+| Learned baseline | multi4 linear/linear | beam, cache on | CPU search + CUDA model | ~69m est.; 49.0m recorded resume | 178/200 | 8/68 | 50.97s | 9.42 | single profiled | stronger old baseline |
+| Best checkpoint, raw eval | multi4 conv/log | beam, cache off | CPU search + CUDA model | 29.5m | 188/200 | 18/68 | 1203.29s | 0.90 | single control | no-cache baseline |
+| Best checkpoint | multi4 conv/log | beam, cache on | CPU search + CUDA model | 29.5m | 188/200 | 18/68 | 93.28s +/- 2.52s | 11.59 | 3 repeats | cached beam baseline |
+| Optimized throughput | multi4 conv/log | best-first `512`, cache on | CPU search + CUDA model | 29.5m | 195/200 | 20/68 | 83.71s +/- 0.60s | 14.34 | 3 repeats | fastest learned setting |
+| Best repeated learned result | multi4 conv/log | best-first `1024`, cache on | CPU search + CUDA model | 29.5m | 199/200 | 32/68 | 138.02s +/- 1.02s | 13.91 | 3 repeats | best repeated solve rate |
+| High-budget ceiling | multi4 conv/log | best-first `16384`, cache cap 1m | CPU search + CUDA model | 29.5m | n/a | 45/68 | 1136.53s | 2.38 | single run | solve-rate ceiling diagnostic |
 
 Checkpoint cost is RGD expert generation plus model training time where
 available. For multi4 linear, the recorded time is for the resume run; the
@@ -515,10 +590,14 @@ earlier analysis estimated about `69m` for the full 20-epoch run. For multi4
 conv/log, the checkpoint cost is `60.49s` expert generation plus `1707.44s`
 training.
 
-The best learned system is now the same `multi4 conv/log` checkpoint with
+The best repeated learned system is the same `multi4 conv/log` checkpoint with
 best-first budget `1024`: `32/68` Level1 solves. It does not match the upstream
 planner, but it is a large search-side improvement over cached beam
 (`18/68 -> 32/68`) without additional model training.
+
+The highest single-run learned solve rate is budget `16384`: `45/68` in
+`1136.53s`. This is a useful ceiling result, but it is much worse for
+experiment throughput.
 
 The best experiment-throughput learned setting is best-first budget `512`:
 `20/68` in `83.71s`, or `14.34` solves/minute. It slightly improves solve rate
@@ -552,6 +631,24 @@ wall-clock time.
 | Best-first `512` | on | 195/200 | 51.55s | 226.97 |
 | Best-first `1024` | on | 199/200 | 54.78s | 217.94 |
 
+### Level2 Probe
+
+The first Level2 best-first probes show nonzero transfer, but the cost is high.
+
+| Search | Max depth | Cache cap | Level2 solved | Time | Solves/min | Solved puzzle |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| Best-first `1024` | 100 | 250,000 | 0/74 | 222.32s | 0.00 | n/a |
+| Best-first `2048` | 200 | 250,000 | 0/74 | 442.94s | 0.00 | n/a |
+| Best-first `4096` | 200 | 250,000 | 1/74 | 1228.74s | 0.049 | `Sequence Your Goals.pwp` |
+
+The `4096` Level2 run hit the same `250000` prediction-cache entry cap seen in
+the high-budget Level1 run: `667,601` prediction-cache misses but only
+`250,000` retained entries. This means the Level2 timing is partly measuring
+cache saturation and recomputation. The result is still important because it
+shows the Level0-trained checkpoint can solve at least one Level2 puzzle with
+larger guided search, but the current cost is too high for the main throughput
+story.
+
 ### Final Interpretation
 
 The optimization stack is best described as three distinct gains:
@@ -561,7 +658,7 @@ The optimization stack is best described as three distinct gains:
 2. Inference caching: cached beam preserved `18/68` but reduced the comparable
    no-cache beam runtime from `1203.29s` to `78.09s`.
 3. Search quality: best-first budget `1024` raised the same checkpoint from
-   `18/68` to `32/68`.
+   `18/68` to `32/68`, and a high-budget single-run ceiling reached `45/68`.
 
 The fair headline for learned solving is therefore:
 
@@ -571,6 +668,15 @@ Level1: 32/68
 Runtime: 138.02s +/- 1.02s over three full runs
 Throughput: 13.91 solves/minute
 Level0 base sanity: 199/200
+```
+
+The current single-run solve-rate ceiling is:
+
+```text
+multi4 conv/log checkpoint + prediction cache + best-first budget 16384
+Level1: 45/68
+Runtime: 1136.53s
+Throughput: 2.38 solves/minute
 ```
 
 The RGD row remains a Level1-only planner reference rather than a learned-policy

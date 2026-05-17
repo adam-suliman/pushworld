@@ -1,0 +1,716 @@
+{
+  "split": "level2_bf_2048_s200",
+  "solved": 0,
+  "total": 74,
+  "skipped": 0,
+  "success_rate": 0.0,
+  "time_s": 442.94388830000025,
+  "solves_per_minute": 0.0,
+  "max_steps": 200,
+  "beam_width": 8,
+  "beam_depth": 8,
+  "top_k": 3,
+  "repeat_penalty": 1.0,
+  "distance_target": "log",
+  "beam_score": "policy_distance",
+  "distance_weight": 0.15,
+  "beam_length_normalization": 0.0,
+  "closed_list_pruning": false,
+  "search_mode": "best_first",
+  "best_first_budget": 2048,
+  "best_first_batch_size": 32,
+  "best_first_top_k": 3,
+  "best_first_max_depth": 200,
+  "best_first_step_penalty": 0.0,
+  "best_first_solved": 0,
+  "fallback_count": 0,
+  "cache_entries": 244297,
+  "prediction_cache_entries": 244297,
+  "profile": {
+    "puzzle_parse_time_s": 39.74971880000521,
+    "eval_loop_time_s": 442.94388830000025,
+    "encode_time_s": 31.716532799815468,
+    "model_forward_time_s": 337.7544402998574,
+    "env_step_time_s": 16.280476501280646,
+    "beam_expand_time_s": 0.0,
+    "beam_rank_time_s": 0.0,
+    "encode_cache_hits": 0,
+    "encode_cache_misses": 244297,
+    "prediction_cache_hits": 192044,
+    "prediction_cache_misses": 244297,
+    "model_forward_batches": 5280,
+    "model_forward_states": 244297,
+    "predict_batch_calls": 10412,
+    "predict_batch_requested_states": 436341,
+    "predict_batch_unique_forward_states": 244297,
+    "beam_candidate_count": 0,
+    "beam_closed_list_prunes": 0,
+    "best_first_expand_time_s": 21.600537199909013,
+    "best_first_rank_time_s": 379.9192641002701,
+    "best_first_nodes_expanded": 151552,
+    "best_first_nodes_generated": 295523,
+    "best_first_closed_prunes": 166820,
+    "best_first_queue_max": 2851,
+    "best_first_batches": 5206
+  },
+  "results": [
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Anticipated Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Archery.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Bottle Opener.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Boulders.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Bring A Friend.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Bubbles.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\C Tool Wall.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Canonical Repeated Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Cant Slip Around.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Cavern Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Choose Your Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Clean Sweep.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Container Assembly.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Corridor Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Corridor Obstacle With Distractors.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Dinner Table.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Disassemble Box.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Dont Push With Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Drawer With Lock.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Encircle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Expensive Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Fewest Obstacles Push.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Get Tool First.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Go Backward To Go Forward.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Go Fishing.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Goggles.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Halfway Done.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\House.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Interlocking Piece Insertion.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Lattice.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Lock And Load.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Maze Of Mystery.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Memory Card Slots.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Misleading Shorter Path.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Moveable H Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Multiple Wall Obstacles.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Nutcracker.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Obstacle Ordering.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Obstacle To Reach Tool.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Parasitic Field.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Parasitic Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Pinata.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Pull Dont Push.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Pyramid Assembly.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Pyramid Corridor Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Recursive Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Reflection.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Remote Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Required Tool.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Robot Assembly.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\S Tool.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Sandwich.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Sequence Your Goals.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Simultaneous Obstacle Removal.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Simultaneous Obstacles.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Sneak Around Corridor Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Sorting Assembly.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Spiral.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Squeeze Around Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Stack The Dishes.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Stacked Corridor Obstacles.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Tidy Up.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Tight Corner.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Together Again.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Tool From Drawer.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Tool To Remove Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Transport Container.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Trap Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Tunnel Swap.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Unhook To Go Around.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Unlock The Chest.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Up And Over.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\Walk The Plank.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    },
+    {
+      "puzzle": "external\\pushworld\\benchmark\\puzzles\\level2\\You Are Your Own Obstacle.pwp",
+      "solved": false,
+      "steps": 0,
+      "repeated_states": 0,
+      "skipped": false,
+      "search_source": "best_first_failed"
+    }
+  ],
+  "checkpoint_args": {
+    "train_dir": "[WindowsPath('data/level0/base/train'), WindowsPath('data/level0/all/train'), WindowsPath('data/level0/shapes/train'), WindowsPath('data/level0/obstacles/train')]",
+    "test_dir": "[WindowsPath('data/level0/base/test')]",
+    "level1_dir": "external\\pushworld\\benchmark\\puzzles\\level1",
+    "planner": "external\\pushworld\\cpp\\build\\bin\\run_planner.exe",
+    "train_puzzles": "5",
+    "test_puzzles": "10",
+    "level1_puzzles": "5",
+    "all_train": "True",
+    "all_test": "True",
+    "all_level1": "True",
+    "level0_symmetry_augment": "False",
+    "augment_transforms": "all",
+    "epochs": "6",
+    "batch_size": "64",
+    "lr": "0.001",
+    "distance_loss_weight": "0.2",
+    "distance_target": "log",
+    "distance_bins": "0",
+    "encoder_stem": "conv",
+    "dropout": "0.01",
+    "d_model": "64",
+    "nhead": "4",
+    "layers": "1",
+    "amp": "True",
+    "max_steps": "100",
+    "beam_width": "8",
+    "beam_depth": "8",
+    "top_k": "3",
+    "repeat_penalty": "0.0",
+    "beam_score": "policy_distance",
+    "distance_weight": "0.15",
+    "beam_length_normalization": "0.0",
+    "eval_every": "0",
+    "eval_puzzles": "50",
+    "log_every_batches": "0",
+    "max_cache_entries": "250000",
+    "output": "reports\\planner_imitation_level0_multi4_convlog_e6_train.json",
+    "model_output": "models\\planner_imitation_level0_multi4_convlog_e6.pt",
+    "resume_checkpoint": "None",
+    "epoch_checkpoint_dir": "models\\planner_imitation_level0_multi4_convlog_e6_epochs",
+    "no_epoch_checkpoints": "False",
+    "tensorboard_log": "None",
+    "skip_train_eval": "True",
+    "skip_final_eval": "True",
+    "print_expert_plans": "False",
+    "verbose": "False",
+    "planner_time_limit": "10.0",
+    "planner_workers": "8",
+    "seed": "1"
+  },
+  "runtime": {
+    "neural_model_device": "cuda",
+    "cuda_available": true,
+    "cuda_device": "NVIDIA GeForce RTX 2060",
+    "torch_version": "2.10.0.dev20251006+cu130",
+    "python_executable": "C:\\Users\\adams\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "python_version": "3.13.3",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cpu_components": [
+      "puzzle parsing",
+      "environment stepping",
+      "search frontier management",
+      "state and prediction cache dictionaries"
+    ]
+  }
+}

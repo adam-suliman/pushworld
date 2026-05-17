@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import platform
 import statistics
 import subprocess
 import sys
@@ -164,6 +165,16 @@ def aggregate_repeats(repeats: list[dict[str, Any]]) -> dict[str, Any]:
     return aggregate
 
 
+def runtime_metadata() -> dict[str, Any]:
+    return {
+        "planner_process_device": "cpu",
+        "neural_model_device": None,
+        "python_executable": sys.executable,
+        "python_version": sys.version.split()[0],
+        "platform": platform.platform(),
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--planner", type=Path, default=default_planner_path())
@@ -216,6 +227,7 @@ def main() -> None:
         "repeats": args.repeats,
         "repeat_results": repeat_summaries,
         "aggregate": aggregate_repeats(repeat_summaries),
+        "runtime": runtime_metadata(),
     }
     print(json.dumps(payload, indent=2))
     if args.output is not None:
