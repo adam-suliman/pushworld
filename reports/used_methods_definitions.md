@@ -138,9 +138,71 @@ The 8000-puzzle Level0 training mix:
 
 **Beam rollout**
 
-A receding-horizon search. At each environment step, it expands candidate
-paths to `beam_depth`, keeps `beam_width` paths, ranks them, executes only the
-first action of the best path, and repeats until solved or `max_steps`.
+A learned policy-guided receding-horizon planner. It was the original
+closed-loop evaluation setup before best-first search. The trained checkpoint
+scores actions and candidate leaf states, while beam search supplies the local
+lookahead procedure.
+
+Beam rollout does not search once from the initial state and then execute the
+whole found path. Instead, it repeatedly replans from the current real puzzle
+state:
+
+```text
+real current state
+        |
+        v
++--------------------+
+| initialize beam    |
+| path = empty       |
+| score = 0          |
++--------------------+
+        |
+        v
++--------------------+       trained checkpoint
+| expand local tree  | <---  policy head scores actions
+| to beam_depth      |       distance head scores leaves
++--------------------+
+        |
+        v
++--------------------+
+| keep best          |
+| beam_width paths   |
++--------------------+
+        |
+        v
++--------------------+
+| choose best path   |
+| execute only       |
+| its first action   |
++--------------------+
+        |
+        v
+new real state after one action
+        |
+        v
+repeat until goal or max_steps
+```
+
+One replanning step works like this:
+
+1. Start with one beam item: the current real state, an empty path, and score
+   `0`.
+2. For each lookahead depth from `1` to `beam_depth`, score the current beam
+   states with the model.
+3. For each beam state, try only the top `top_k` model actions.
+4. Simulate each selected action in PushWorld to produce candidate next states.
+5. Drop no-op transitions and optionally drop candidates already in the closed
+   list.
+6. Add `repeat_penalty` if a candidate revisits a state from the real rollout.
+7. Deduplicate candidates that reach the same state, keeping the cheaper path.
+8. Score candidate leaves using the configured beam ranker.
+9. Keep only the best `beam_width` candidates and continue the local lookahead.
+10. After the local tree is built, execute only the first action of the best
+    path in the real environment.
+
+This makes beam a planner, but a local one. It repeatedly asks, "What is the
+best first action after a shallow lookahead from where I am now?" It does not
+keep a global queue of all partial plans across the whole puzzle.
 
 Main beam setting:
 
@@ -205,6 +267,73 @@ where:
 - `distance_weight` controls how much the distance head influences search;
 - `step_penalty` is optional and was `0.0` in the main runs.
 
+Best-first search as a flow:
+
+```text
+                           trained checkpoint
+                     policy head + distance head
+                                ^
+                                |
+                                | batched scoring
+                                |
++----------------+      +--------------------+      +----------------------+
+| initial puzzle | ---> | priority frontier  | ---> | pop best states      |
+| state          |      | of partial paths   |      | up to batch size     |
++----------------+      +--------------------+      +----------------------+
+                                  ^                            |
+                                  |                            v
+                                  |                 +----------------------+
+                                  |                 | closed-set check     |
+                                  |                 | skip seen states     |
+                                  |                 +----------------------+
+                                  |                            |
+                                  |                            v
+                                  |                 +----------------------+
+                                  |                 | policy scoring       |
+                                  |                 | choose top-k actions |
+                                  |                 +----------------------+
+                                  |                            |
+                                  |                            v
+                                  |                 +----------------------+
+                                  |                 | environment step     |
+                                  |                 | generate successors  |
+                                  |                 +----------------------+
+                                  |                            |
+                                  |                            v
+                                  |                 +----------------------+
+                                  |                 | candidate filters    |
+                                  |                 | no-ops, closed set,  |
+                                  |                 | duplicate states     |
+                                  |                 +----------------------+
+                                  |                            |
+                                  |                            v
+                                  |                 +----------------------+
+                                  |                 | distance scoring     |
+                                  |                 | estimate remaining   |
+                                  |                 | steps to goal        |
+                                  |                 +----------------------+
+                                  |                            |
+                                  |                            v
+                                  |                 +----------------------+
+                                  +---------------- | push candidates with |
+                                                    | priority score       |
+                                                    +----------------------+
+
+Stop conditions:
+
+- generated or popped state is already a goal;
+- path length reaches `best_first_max_depth`;
+- expanded states reach `best_first_budget`;
+- frontier becomes empty.
+```
+
+In plain language: the method repeatedly asks, "Of all partial plans I have
+seen so far, which one looks most promising?" It expands that partial plan,
+uses the model to propose a few likely next actions, simulates those actions in
+the real PushWorld environment, scores the resulting states, and puts them back
+into the shared priority queue. This lets the search jump back and forth across
+different partial plans instead of committing to one rollout or one local beam.
+
 One iteration of the implementation does this:
 
 1. Pop up to `best_first_batch_size` lowest-priority states from the frontier.
@@ -244,6 +373,77 @@ Evaluation uses in-memory caches keyed by `(puzzle_path, state)`:
 - encoded tensor cache: avoids repeated state-to-plane encoding;
 - prediction cache: avoids repeated model forwards for the same state.
 
+These caches are used during closed-loop evaluation only. They do not contain
+solutions, expert plans, or future actions. They only remember computations
+the evaluator has already performed for an exact puzzle state.
+
+Inference caching as a flow:
+
+```text
+requested state batch
+        |
+        v
++-------------------------+
+| for each (puzzle,state) |
+| check prediction cache  |
++-------------------------+
+        |
+        +---------------- cache hit ----------------+
+        |                                           |
+        v                                           v
++-------------------------+              +-------------------------+
+| collect cache misses    |              | reuse cached            |
+| and unique states       |              | action log-probs        |
++-------------------------+              | and distance estimate   |
+        |                                +-------------------------+
+        v                                           |
++-------------------------+                         |
+| check encoded-state     |                         |
+| cache for each miss     |                         |
++-------------------------+                         |
+        |                                           |
+        v                                           |
++-------------------------+                         |
+| encode missing states   |                         |
+| into 7-channel tensors  |                         |
++-------------------------+                         |
+        |                                           |
+        v                                           |
++-------------------------+                         |
+| batch tensor forward    |                         |
+| through checkpoint      |                         |
++-------------------------+                         |
+        |                                           |
+        v                                           |
++-------------------------+                         |
+| store prediction        |                         |
+| results in cache        |                         |
++-------------------------+                         |
+        |                                           |
+        +-------------------+-----------------------+
+                            |
+                            v
+              outputs in original request order
+```
+
+The prediction cache stores:
+
+```text
+(action_log_probs, expected_distance)
+```
+
+The encoded-state cache stores:
+
+```text
+7-channel padded board tensor
+```
+
+The important case is beam rollout. Beam replans from scratch after every real
+action, so adjacent local search trees overlap heavily. Without caching, the
+same state can be encoded and forwarded through the transformer many times.
+With caching, repeated states reuse the first computed policy and distance
+outputs.
+
 The two caches have very different memory costs. A prediction-cache entry is
 small, but an encoded-state entry stores a full padded board tensor. For the
 current checkpoint board size, one encoded state is about `58.6 KiB`, so a
@@ -261,10 +461,72 @@ changed.
 
 **Persistent training cache**
 
-The training cache stores validated RGD traces and pre-materialized training
-tensors under `data/cache/planner_imitation/...`. On a cache hit, training
-skips RGD calls and repeated train-state encoding. This is for experiment
-startup time, not closed-loop inference.
+The training cache is separate from inference caching. It stores reusable
+training data under:
+
+```text
+data/cache/planner_imitation/<cache_key>/
+```
+
+It exists so repeated training experiments do not rerun RGD expert generation
+or rebuild the same base tensors.
+
+Persistent training cache as a flow:
+
+```text
+train puzzle directories
+        |
+        v
++-------------------------+
+| compute cache key       |
+| paths, hashes, shape,   |
+| transform settings      |
++-------------------------+
+        |
+        v
++-------------------------+
+| cache manifest exists?  |
++-------------------------+
+        |
+        +------------- yes ----------------+
+        |                                  |
+        v                                  v
++-------------------------+     +-------------------------+
+| validate manifest       |     | run RGD expert planner  |
+| file hashes and schema  |     | and validate plans      |
++-------------------------+     +-------------------------+
+        |                                  |
+        v                                  v
++-------------------------+     +-------------------------+
+| load cached tensors     |     | parse puzzles, step     |
+| actions, distances      |     | expert trajectories     |
++-------------------------+     +-------------------------+
+        |                                  |
+        |                                  v
+        |                       +-------------------------+
+        |                       | encode states, store    |
+        |                       | tensors and targets     |
+        |                       +-------------------------+
+        |                                  |
+        +----------------+-----------------+
+                         |
+                         v
+                DataLoader / training loop
+```
+
+The persistent cache stores:
+
+- selected training puzzle paths and content hashes;
+- RGD expert plans and validation metadata;
+- encoded base state tensors;
+- action targets;
+- remaining-step distance targets;
+- puzzle dimensions and puzzle indices for augmentation.
+
+On a cache hit, training skips RGD calls, train-puzzle parsing for stored
+traces, and repeated train-state encoding. This is for experiment startup and
+data-materialization time, not closed-loop inference. It also does not include
+test solutions or evaluation plans.
 
 ## Current Compared Systems
 
